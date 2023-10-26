@@ -13,7 +13,7 @@ import Place from '@/models/place'
 import {EventBus} from '@/common/event-bus'
 
 // Local components
-import IschronesDetails from './components/isochrones-details/IsochronesDetails'
+import IsochronesDetails from './components/isochrones-details/IsochronesDetails'
 import MapFormMixin from '../map-form-mixin'
 
 export default {
@@ -29,7 +29,7 @@ export default {
     FieldsContainer,
     Draggable,
     FormActions,
-    IschronesDetails
+    IsochronesDetails
   },
   computed: {
     disabledActions () {
