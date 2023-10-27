@@ -36,6 +36,7 @@ const constants = {
     place: 'place',
     search: 'search',
     isochrones: 'isochrones',
+    optimization: 'optimization',
     pageNotFound: 'pageNotFound'
   },
   importableModes: {

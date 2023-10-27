@@ -1,5 +1,6 @@
 import PlacesAndDirections from './components/place-and-directions/PlacesAndDirections'
 import Isochrones from './components/isochrones/Isochrones'
+import Optimization from './components/optimization/Optimization'
 import resolver from '@/support/routes-resolver'
 import constants from '@/resources/constants'
 import appConfig from '@/config/app-config'
@@ -10,7 +11,8 @@ export default {
   }),
   components: {
     PlacesAndDirections,
-    Isochrones
+    Isochrones,
+    Optimization
   },
   watch: {
     activeTab: function () {
@@ -32,6 +34,9 @@ export default {
     },
     hasIsochronesTab () {
       return appConfig.supportsIsochrones
+    },
+    hasOptimizationTab () {
+      return appConfig.supportsOptimization
     }
   },
   methods: {
@@ -49,6 +54,8 @@ export default {
         }
       } else if (this.activeTab === 1) {
         this.$store.commit('mode', constants.modes.isochrones)
+      } else if (this.activeTab === 2) {
+        this.$store.commit('mode', constants.modes.optimization)
       }
     },
     /**
@@ -62,6 +69,11 @@ export default {
       )
       if (this.hasIsochronesTab && this.$store.getters.mode === constants.modes.isochrones) {
         this.activeTab = 1
+        if (this.$mdAndUpResolution && !this.$store.getters.embed) {
+          this.$store.commit('setLeftSideBarIsOpen', true)
+        }
+      } else if (this.hasOptimizationTab && this.$store.getters.mode === constants.modes.optimization) {
+        this.activeTab = 2
         if (this.$mdAndUpResolution && !this.$store.getters.embed) {
           this.$store.commit('setLeftSideBarIsOpen', true)
         }
