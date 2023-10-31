@@ -1,5 +1,5 @@
 import FieldsContainer from '@/fragments/forms/fields-container/FieldsContainer'
-import PlaceInput from '@/fragments/forms/place-input/PlaceInput.vue'
+import JobInput from '@/fragments/forms/job-input/JobInput.vue'
 import MapViewData from '@/models/map-view-data'
 import constants from '@/resources/constants'
 import appConfig from '@/config/app-config'
@@ -22,7 +22,7 @@ export default {
     jobFocusIndex: null
   }),
   components: {
-    PlaceInput,
+    JobInput,
     FieldsContainer,
     Draggable,
     FormActions,

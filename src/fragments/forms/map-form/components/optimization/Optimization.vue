@@ -7,7 +7,7 @@
             <li :key="index" v-for="(job, index) in getJobs">
               <v-layout row >
                 <v-flex v-bind="{[ $store.getters.mode === constants.modes.optimization? 'sm10 md11' : 'sm12']: true}">
-                  <place-input :ref="'job'+index"
+                  <job-input :ref="'job'+index"
                                id-postfix="optimization"
                                :support-directions=false
                                :optimization-button-tooltip="$store.getters.isSidebarVisible && active"
@@ -19,7 +19,7 @@
                                :single="jobs.length === 1"
                                :is-last="(jobs.length -1) === index && index !== 0"
                                @removeInput="removeJobInput">
-                  </place-input>
+                  </job-input>
                 </v-flex>
               </v-layout >
             </li>
@@ -27,7 +27,7 @@
         </ul>
       </template>
       <v-layout row class="form-actions-btns">
-        <form-actions :place-inputs="jobs.length" :disabled-actions="disabledActions"
+        <form-actions :job-inputs="jobs.length" :disabled-actions="disabledActions"
                       @addPlaceInput="addInput"
                       @clearPlaces="clearJobs"
                       @contentUploaded="contentUploaded">
