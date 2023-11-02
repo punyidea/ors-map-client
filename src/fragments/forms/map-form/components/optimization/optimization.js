@@ -9,7 +9,7 @@ import MapFormMixin from '../map-form-mixin'
 
 // Local components
 import JobDetails from './components/job-details/JobDetails.vue'
-import Job from '@/fragments/forms/map-form/components/optimization/models/job'
+import Job from '@/models/job'
 
 export default {
   mixins: [MapFormMixin],

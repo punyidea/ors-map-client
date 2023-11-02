@@ -3,7 +3,7 @@ import AppMode from '@/support/app-modes/app-mode'
 import constants from '@/resources/constants'
 import appConfig from '@/config/app-config'
 import GeoUtils from '@/support/geo-utils'
-import Job from '@/fragments/forms/map-form/components/optimization/models/job'
+import Job from '@/models/job'
 import Utils from '@/support/utils'
 import {EventBus} from '@/common/event-bus'
 
