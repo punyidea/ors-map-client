@@ -182,6 +182,19 @@ const orsParamsParser = {
   },
 
   /**
+   * Build optimization search args
+   * @param {Array} jobs
+   * @param {Array} vehicles
+   * @returns {Object} args
+   */
+  buildOptimizationArgs: (jobs, vehicles) => {
+    console.log(jobs, vehicles)
+    return new Promise((resolve) => {
+      resolve({'jobs':[{'id':1,'service':300,'amount':[1],'location':[1.98465,48.70329],'skills':[1],'time_windows':[[32400,36000]]},{'id':2,'service':300,'amount':[1],'location':[2.03655,48.61128],'skills':[1]},{'id':3,'service':300,'amount':[1],'location':[2.39719,49.07611],'skills':[2]},{'id':4,'service':300,'amount':[1],'location':[2.41808,49.22619],'skills':[2]},{'id':5,'service':300,'amount':[1],'location':[2.28325,48.5958],'skills':[14]},{'id':6,'service':300,'amount':[1],'location':[2.89357,48.90736],'skills':[14]}],'vehicles':[{'id':1,'profile':'driving-car','start':[2.35044,48.71764],'end':[2.35044,48.71764],'capacity':[4],'skills':[1,14],'time_window':[28800,43200]},{'id':2,'profile':'driving-car','start':[2.35044,48.71764],'end':[2.35044,48.71764],'capacity':[4],'skills':[2,14],'time_window':[28800,43200]}],'options':{'g':'true'}})
+    })
+  },
+
+  /**
    * Build routing request args object
    * @param {Array} places
    * @returns {Object} args

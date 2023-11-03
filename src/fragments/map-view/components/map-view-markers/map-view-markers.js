@@ -58,7 +58,7 @@ export default {
       if (this.isPoi || this.$store.getters.embed) {
         return false
       }
-      let markerRemovableModes = [constants.modes.directions, constants.modes.roundTrip, constants.modes.isochrones, constants.modes.place]
+      let markerRemovableModes = [constants.modes.directions, constants.modes.roundTrip, constants.modes.isochrones, constants.modes.place, constants.modes.optimization]
       let isRemovable = markerRemovableModes.includes(this.mode)
       return isRemovable
     },
@@ -71,7 +71,7 @@ export default {
       if (this.isPoi || this.$store.getters.embed) {
         return false
       }
-      const draggableModes = [constants.modes.directions, constants.modes.roundTrip, constants.modes.isochrones]
+      const draggableModes = [constants.modes.directions, constants.modes.roundTrip, constants.modes.isochrones, constants.modes.optimization]
       const isDraggable = draggableModes.includes(this.mode)
       return isDraggable
     },
