@@ -14,28 +14,26 @@ import {EventBus} from '@/common/event-bus'
 
 // Local components
 import MapFormMixin from '../map-form-mixin'
-import OptimizationDetails
-  from '@/fragments/forms/map-form/components/optimization/components/optimization-details/optimization-details'
+import OptimizationDetails from './components/optimization-details/OptimizationDetails'
 
 export default {
   mixins: [MapFormMixin],
   data: () => ({
-    mode: constants.modes.isochrones,
+    mode: constants.modes.optimization,
     mapViewData: new MapViewData(),
     places: [new Place()],
     roundTripActive: false
   }),
   components: {
-    Optimization,
-    OptimizationDetails,
     PlaceInput,
     FieldsContainer,
     Draggable,
-    FormActions
+    FormActions,
+    OptimizationDetails
   },
   computed: {
     disabledActions () {
-      return appConfig.disabledActionsForIsochrones
+      return appConfig.disabledActionsForOptimization
     }
   },
   created () {
@@ -74,22 +72,11 @@ export default {
         context.places = [new Place()]
       }
     })
-
-    // Avoid polygons changed, so recalculate the route
-    EventBus.$on('avoidPolygonsChanged', (polygons) => {
-      if (context.active) {
-        context.$root.appHooks.run('avoidPolygonsChangedInIsochrones', polygons)
-        context.avoidPolygonsFilterAccessor.value = polygons
-
-        if (context.getFilledPlaces().length > 0) {
-          context.updateAppRoute()
-        }
-      }
-    })
-    // When the user click on the map and select to add this point as an additional destination in the route
-    EventBus.$on('addAsIsochroneCenter', (data) => {
-      context.addAsIsochroneCenter(data)
-    })
+    //
+    // // When the user click on the map and select to add this point as an additional destination in the route
+    // EventBus.$on('addAsIsochroneCenter', (data) => {
+    //   context.addAsIsochroneCenter(data)
+    // })
 
     // When a marker drag finishes, update
     // the place coordinates and re-render the map
@@ -223,7 +210,7 @@ export default {
         const places = context.getFilledPlaces()
 
         if (places.length > 0) {
-          context.showInfo(context.$t('optimize.optimizeJobs'), { timeout: 0 })
+          context.showInfo(context.$t('optimization.optimizeJobs'), { timeout: 0 })
           EventBus.$emit('showLoading', true)
 
           // Calculate the route

@@ -1,13 +1,10 @@
-<script src="./optimization.js">
-</script>
-
 <template>
   <div>
     <v-form @submit.prevent style="background:white">
       <template  v-if="places.length > 0">
         <div class="optimization-heading">Vehicles:</div>
         <v-card elevation="3" color="info" style="margin: 5px;">
-          <v-card-title>Vehicle 1</v-card-title>
+          <v-card-title><v-icon style="padding: 0 5px 0 0">local_shipping</v-icon>Vehicle 1</v-card-title>
           <v-card-text>car, start, end</v-card-text>
         </v-card>
         <div class="optimization-heading">Jobs:</div>
@@ -53,7 +50,7 @@
     </v-form>
   </div>
 </template>
-
+<script src="./optimization.js">
+</script>
 <style scoped src="./optimization.css">
-
 </style>

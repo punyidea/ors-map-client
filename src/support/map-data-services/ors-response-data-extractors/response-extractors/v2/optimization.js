@@ -1,6 +1,7 @@
 import MapViewData from '@/models/map-view-data'
 import Place from '@/models/place'
 import Utils from '@/support/utils'
+import GeoUtils from '@/support/geo-utils'
 
 /**
  * DirectionsJSONBuilder Map data Builder class
@@ -30,12 +31,15 @@ class OptimizationBuilder {
 
   buildRoutes = () => {
     for (const key in this.responseData.routes) {
+      this.responseData.routes[key].properties = {
+        id: key + 1
+      }
       this.responseData.routes[key].geometry = {
-        coordinates: this.decodePolyline(this.responseData.routes[key].geometry, false),
+        coordinates: GeoUtils.switchLatLonIndex(this.decodePolyline(this.responseData.routes[key].geometry, false)),
         type: 'Polyline'
       }
     }
-    return [this.responseData.routes[0]]
+    return this.responseData.routes
   }
 
   /**
