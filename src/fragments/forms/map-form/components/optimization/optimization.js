@@ -8,7 +8,6 @@ import AppMode from '@/support/app-modes/app-mode'
 import MapViewData from '@/models/map-view-data'
 import constants from '@/resources/constants'
 import appConfig from '@/config/app-config'
-import Draggable from 'vuedraggable'
 import Place from '@/models/place'
 import {EventBus} from '@/common/event-bus'
 
@@ -22,12 +21,14 @@ export default {
     mode: constants.modes.optimization,
     mapViewData: new MapViewData(),
     places: [new Place()],
-    roundTripActive: false
+    vehicles: [{'id':1,'profile':'driving-car','start':[2.35044,48.71764],'end':[2.35044,48.71764],'capacity':[4],'skills':[1,14],'time_window':[28800,43200]},
+      {'id':2,'profile':'driving-car','start':[2.35044,48.71764],'end':[2.35044,48.71764],'capacity':[4],'skills':[2,14],'time_window':[28800,43200]}],
+    roundTripActive: false,
+    showManageJobsTooltip: true
   }),
   components: {
     PlaceInput,
     FieldsContainer,
-    Draggable,
     FormActions,
     OptimizationDetails
   },
@@ -127,6 +128,12 @@ export default {
         context.showError(this.$t('optimization.couldNotResolveTheJobLocation'), { timeout: 0 })
       })
     },
+    manageJobs(jobId) {
+      // TODO: Have Job Management in separate component. Popup using Box component.
+      console.log(jobId)
+      this.showError(this.$t('global.notImplemented'), {timeout: 3000})
+
+    },
     /**
      * Set a suggested place as the selected one for a given place input
      * @param {*} data - can be the place object or an object containing the place
@@ -214,7 +221,7 @@ export default {
           EventBus.$emit('showLoading', true)
 
           // Calculate the route
-          Optimization(places).then(data => {
+          Optimization(places, context.vehicles).then(data => {
             data.options.translations = context.$t('global.units')
             data.options.translations.polygon = this.$t('global.polygon')
 
@@ -281,6 +288,9 @@ export default {
           this.addPlaceInput()
         }
       }
+    },
+    vehicleColors(vehicleId) {
+      return constants.vehicleColors[vehicleId]
     }
   }
 }

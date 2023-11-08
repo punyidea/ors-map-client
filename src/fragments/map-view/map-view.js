@@ -168,7 +168,6 @@ export default {
       initialMaxZoom: appConfig.initialMapMaxZoom,
       localMapViewData: new MapViewData(), // we use a local copy of the mapViewData to be able to modify it
       mainRouteColor: theme.primary,
-      alternativeRouteColor: constants.alternativeRouteColor,
       routeBackgroundColor: constants.routeBackgroundColor,
       guid: null,
       clickLatLng: null,
@@ -706,6 +705,12 @@ export default {
         }
 
       }, 500)
+    },
+    alternativeRouteColor(route) {
+      if(this.$store.getters.mode === constants.modes.optimization) {
+        return constants.vehicleColors[route.vehicle]
+      }
+      return constants.alternativeRouteColor
     },
     /**
      * Refresh the altitude modal (force a 'destroy' and a 'rebuild')

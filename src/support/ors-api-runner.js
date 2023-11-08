@@ -349,9 +349,9 @@ const Optimization = (jobs, vehicles = []) => {
   //   host: mapSettings.apiBaseUrl,
   //   service: mapSettings.endpoints.optimization
   // })
-  return new Promise((resolve, _) => {
-    OrsParamsParser.buildOptimizationArgs(jobs, _).then(args => {
-      console.log(args)
+  return new Promise((resolve, reject) => {
+    OrsParamsParser.buildOptimizationArgs(jobs, vehicles).then(args => {
+      console.log(args, reject)
       resolve({ options: { origin: constants.dataOrigins.optimization, apiVersion: constants.apiVersion }, content: optimizationMockData })
       // optimization.calculate(args).then((response) => {
       //   const data = { options: { origin: constants.dataOrigins.optimization, apiVersion: constants.apiVersion }, content: response }

@@ -3,12 +3,13 @@ import Share from '@/fragments/forms/map-form/components/share/Share'
 import Print from '@/fragments/forms/map-form/components/print/Print'
 import MapViewData from '@/models/map-view-data'
 import OptimizationSteps from './components/optimization-steps/OptimizationSteps'
-
+import geoUtils from '@/support/geo-utils'
+import constants from '@/resources/constants'
 
 export default {
   data: () => ({
     localMapViewData: null,
-    panelExtended: [true, true, true]
+    panelExtended: [true, true, true],
   }),
   props: {
     mapViewData: {
@@ -39,26 +40,45 @@ export default {
       if (!this.hasRoutes) {
         return []
       }
-      // const routes = []
-      // const context = this
-      // for (const key in this.localMapViewData.routes) {
-      //   const route = Object.assign({}, this.localMapViewData.routes[key])
-      //   const unit = route.summary.unit || route.summary.originalUnit
-      //   if (!route.summary.humanized) {
-      //     route.summary = context.getHumanizedSummary(route.summary, unit)
-      //     route.summary.humanized = true
-      //     context.parseSegments(route.properties.segments)
-      //     this.localMapViewData.routes[key].summary = route.summary
-      //   }
-      //   routes.push(route)
-      // }
-      return this.localMapViewData.routes
-    }
+      const routes = []
+      for (const key in this.localMapViewData.routes) {
+        const route = Object.assign({}, this.localMapViewData.routes[key])
+        if (!route.summary) {
+          route.summary = geoUtils.getHumanizedTimeAndDistance({distance: route.distance, duration:route.duration, unit: 'm'},  this.$t('global.units'))
+          this.parseSteps(route.steps)
+          route.distance = route.summary.distance
+          route.duration = route.summary.duration
+        }
+        routes.push(route)
+      }
+      return routes
+    },
   },
   created() {
     this.localMapViewData = this.mapViewData.clone()
   },
   methods: {
+    /**
+     * get the parsed segments by
+     * humanizing the duration and distances
+     * @param {*} steps
+     * @returns {Object} segments
+     */
+    parseSteps (steps) {
+      for (const step of steps) {
+        let {duration, distance} = geoUtils.getHumanizedTimeAndDistance({distance: step.distance, duration:step.duration, unit: 'm'},  this.$t('global.units'))
+        step.duration = duration
+        step.distance = distance
+      }
+    },
+    vehicleColors(vehicleId) {
+      return constants.vehicleColors[vehicleId]
+    },
+    generateRoute(routeId) {
+      // TODO: Move to route tab and generate route for this vehicle using jobs as via points
+      console.log(routeId)
+      this.showError(this.$t('global.notImplemented'), {timeout: 3000})
+    }
   },
   // watch: {
   //   /**

@@ -1,7 +1,7 @@
 export default {
   optimizationDetails: {
     optimizationDetails: 'Optimized routes',
-    steps: 'Job order',
+    schedule: 'Schedule',
     warningUnassigned: 'There are unassigned jobs for this optimization!',
     'distance': 'Distance',
     'duration': 'Duration',

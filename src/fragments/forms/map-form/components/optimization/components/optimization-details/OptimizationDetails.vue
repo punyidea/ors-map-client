@@ -9,9 +9,9 @@
     <v-expansion-panel slot="content" class="no-shadow" v-if="hasRoutes" :value="panelExtended" :expand="true">
       <v-expansion-panel-content style="background: transparent;" class="routes-header" :key="routeIndex" v-for="(route, routeIndex) in parsedRoutes">
         <div slot="header">
-          <h4 >{{$t('routeDetails.route')}} {{routeIndex + 1}} (Vehicle {{route.vehicle}})
-            <v-btn icon @click.stop="changeActiveRouteIndex(routeIndex)" v-if="parsedRoutes.length > 1" :title="routeIndex === $store.getters.activeRouteIndex? $t('routeDetails.selectedRoute') : $t('routeDetails.selectRoute')">
-              <v-icon :color="routeIndex === $store.getters.activeRouteIndex? 'primary' : 'dark' " >done</v-icon>
+          <h4><v-icon :color="vehicleColors(route.vehicle)" style="padding: 0 5px 0 0">local_shipping</v-icon>{{$t('routeDetails.route')}} {{routeIndex + 1}} (Vehicle {{route.vehicle}})
+            <v-btn icon @click.stop="generateRoute(routeIndex)" v-if="parsedRoutes.length > 1" :title="routeIndex === $store.getters.activeRouteIndex? $t('routeDetails.selectedRoute') : $t('routeDetails.selectRoute')">
+              <v-icon :color="vehicleColors(route.vehicle)" >directions</v-icon>
             </v-btn>
           </h4>
         </div>
@@ -41,7 +41,7 @@
               <div style="padding:0 0 0 5px">
                 <v-expansion-panel class="no-shadow" v-if="hasRoutes" :value="null">
                   <v-expansion-panel-content class="route-panel" style="background: transparent;" >
-                    <div slot="header"><h4 >{{$t('optimizationDetails.steps')}}</h4></div>
+                    <div slot="header"><h4 >{{$t('optimizationDetails.schedule')}}</h4></div>
                     <v-list class="instructions-scroll">
                       <v-divider></v-divider>
                       <v-list dense>
