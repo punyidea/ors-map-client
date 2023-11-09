@@ -14,6 +14,8 @@ import {EventBus} from '@/common/event-bus'
 // Local components
 import MapFormMixin from '../map-form-mixin'
 import OptimizationDetails from './components/optimization-details/OptimizationDetails'
+import JobList from './components/job-list/JobList'
+import Job from '@/models/job'
 
 export default {
   mixins: [MapFormMixin],
@@ -21,6 +23,14 @@ export default {
     mode: constants.modes.optimization,
     mapViewData: new MapViewData(),
     places: [new Place()],
+    jobs: [
+      // {'id':1,'service':300,'amount':[1],'location':[1.98465,48.70329],'skills':[1],'time_windows':[[32400,36000]]},
+      // {'id':2,'service':300,'amount':[1],'location':[2.03655,48.61128],'skills':[1]},
+      // {'id':3,'service':300,'amount':[1],'location':[2.39719,49.07611],'skills':[2]},
+      // {'id':4,'service':300,'amount':[1],'location':[2.41808,49.22619],'skills':[2]},
+      // {'id':5,'service':300,'amount':[1],'location':[2.28325,48.5958],'skills':[14]},
+      // {'id':6,'service':300,'amount':[1],'location':[2.89357,48.90736],'skills':[14]}
+    ],
     vehicles: [{'id':1,'profile':'driving-car','start':[2.35044,48.71764],'end':[2.35044,48.71764],'capacity':[4],'skills':[1,14],'time_window':[28800,43200]},
       {'id':2,'profile':'driving-car','start':[2.35044,48.71764],'end':[2.35044,48.71764],'capacity':[4],'skills':[2,14],'time_window':[28800,43200]}],
     roundTripActive: false,
@@ -30,7 +40,8 @@ export default {
     PlaceInput,
     FieldsContainer,
     FormActions,
-    OptimizationDetails
+    OptimizationDetails,
+    JobList
   },
   computed: {
     disabledActions () {
@@ -73,11 +84,16 @@ export default {
         context.places = [new Place()]
       }
     })
-    //
-    // // When the user click on the map and select to add this point as an additional destination in the route
-    // EventBus.$on('addAsIsochroneCenter', (data) => {
-    //   context.addAsIsochroneCenter(data)
-    // })
+
+    // On map right click -> addJob
+    EventBus.$on('addJob', (data) => {
+      context.addJob(data)
+    })
+
+    // On map right click -> addVehicle
+    EventBus.$on('addVehicle', (data) => {
+      context.addVehicle(data)
+    })
 
     // When a marker drag finishes, update
     // the place coordinates and re-render the map
@@ -167,6 +183,7 @@ export default {
     updateAppRoute () {
       const places = this.getFilledPlaces()
       this.$store.commit('mode', constants.modes.optimization)
+      // TODO: adjust this for Jobs
       const appMode = new AppMode(this.$store.getters.mode)
       const route = appMode.getRoute(places)
       if (Object.keys(route.params).length > 1) {// params contains data and placeName? props
@@ -196,15 +213,6 @@ export default {
      */
     removePlaceInput (index) {
       this.places.splice(index, 1)
-      this.updateAppRoute()
-    },
-    /**
-     * When the user reorder the place inputs, recalculates thr route
-     */
-    onReordered () {
-      // If the user has changed the order
-      // we have to change the app route
-      // and reload the map
       this.updateAppRoute()
     },
     /**
@@ -281,8 +289,28 @@ export default {
         // places from the appRoute without changing the
         // object reference because it is a prop
         this.places = this.$store.getters.appRouteData.places
-
-        if (this.places.length > 0) {
+        // let context = this
+        // for (const job of this.jobs) {
+        //   let place = new Place(job.location[0], job.location[1])
+        //   place.resolve().then(
+        //     context.places.push(place)
+        //   )
+        // }
+        // TODO: load jobs
+        let storedJobs = localStorage.getItem('jobs')
+        if (storedJobs) {
+          let jobs = JSON.parse(storedJobs)
+          for (const job of jobs) {
+            this.jobs.push(Job.fromJSON(job))
+          }
+        } else if (this.places.length > 0) {
+          const jobs = []
+          for (const [i, place] of this.places.entries()) {
+            const job = Job.fromPlace(place)
+            job.setId(i+1)
+            jobs.push(job)
+          }
+          this.jobs = jobs
           this.optimizeJobs()
         } else {
           this.addPlaceInput()

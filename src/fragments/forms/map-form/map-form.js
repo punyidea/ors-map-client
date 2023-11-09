@@ -78,8 +78,7 @@ export default {
         if (this.$mdAndUpResolution && !this.$store.getters.embed) {
           this.$store.commit('setLeftSideBarIsOpen', true)
         }
-      }
-      if (this.hasOptimizationTab && this.$store.getters.mode === constants.modes.optimization) {
+      } else if (this.hasOptimizationTab && this.$store.getters.mode === constants.modes.optimization) {
         this.activeTab = 2
         if (this.$mdAndUpResolution && !this.$store.getters.embed) {
           this.$store.commit('setLeftSideBarIsOpen', true)
