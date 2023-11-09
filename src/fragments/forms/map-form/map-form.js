@@ -51,6 +51,8 @@ export default {
           } else {
             this.$store.commit('mode', constants.modes.place)
           }
+        } else if (this.$store.getters.mode === constants.modes.optimization) {
+          this.$store.commit('mode', constants.modes.optimization)
         }
       } else if (this.activeTab === 1) {
         this.$store.commit('mode', constants.modes.isochrones)
@@ -64,9 +66,13 @@ export default {
      * and render the map with this data (place or route)
      */
     setTab () {
-      if (!this.hasPlacesAndDirectionsTab) (
-        this.$store.commit('mode', constants.modes.isochrones)
-      )
+      if (!this.hasPlacesAndDirectionsTab) {
+        if (!this.hasIsochronesTab) {
+          this.$store.commit('mode', constants.modes.optimization)
+        } else {
+          this.$store.commit('mode', constants.modes.isochrones)
+        }
+      }
       if (this.hasIsochronesTab && this.$store.getters.mode === constants.modes.isochrones) {
         this.activeTab = 1
         if (this.$mdAndUpResolution && !this.$store.getters.embed) {
