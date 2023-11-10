@@ -34,11 +34,14 @@ class Job extends Place {
       'service': this.service,
       'amount': this.amount
     }
-    for (const prop of ['skills','time_window']) {
-      if (this[prop].length) {
-        out[prop] = this[prop]
-      }
+
+    if (this.skills.length) {
+      out['skills'] = this.skills
     }
+    if (this.time_windows.length) {
+      out['time_windows'] = this.time_windows
+    }
+
   }
 }
 export default Job

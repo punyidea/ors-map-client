@@ -14,7 +14,8 @@ import {EventBus} from '@/common/event-bus'
 // Local components
 import MapFormMixin from '../map-form-mixin'
 import OptimizationDetails from './components/optimization-details/OptimizationDetails'
-import JobList from './components/job-list/JobList'
+import JobList from './components/job-list/JobList.vue'
+import EditJobs from './components/job-list/EditJobs.vue'
 import Job from '@/models/job'
 
 export default {
@@ -42,7 +43,8 @@ export default {
     FieldsContainer,
     FormActions,
     OptimizationDetails,
-    JobList
+    JobList,
+    EditJobs
   },
   computed: {
     disabledActions () {
@@ -148,10 +150,6 @@ export default {
     manageJobs(jobId) {
       this.editJobsClicked = true
       EventBus.$emit('showJobsModal')
-      // TODO: Have Job Management in separate component. Popup using Box component.
-      console.log(jobId)
-      this.showError(this.$t('global.notImplemented'), {timeout: 3000})
-
     },
     /**
      * Set a suggested place as the selected one for a given place input

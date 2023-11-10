@@ -1,0 +1,15 @@
+.import-btn {
+  padding: 5px;
+  min-width: 0;
+  float: right;
+  margin: 0;
+  height: 24px;
+}
+
+.export-btn {
+  padding: 5px;
+  min-width: 0;
+  float: right;
+  margin: 0;
+  height: 24px;
+}

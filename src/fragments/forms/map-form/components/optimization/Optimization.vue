@@ -72,6 +72,7 @@
         </form-actions>
       </v-layout>
     </v-form>
+    <edit-jobs :jobs="jobs"></edit-jobs>
   </div>
 </template>
 <script src="./optimization.js">

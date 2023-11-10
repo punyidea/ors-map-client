@@ -12,6 +12,8 @@ export default {
     jobs: 'Jobs',
     vehicles: 'Vehicles',
     manageJobs: 'Manage jobs',
+    importJobFile: 'Import jobs',
+    exportJobFile: 'Export jobs',
     manageVehicles: 'Manage vehicles'
   }
 }
