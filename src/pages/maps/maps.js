@@ -9,6 +9,7 @@ import AppMode from '@/support/app-modes/app-mode'
 import MapViewData from '@/models/map-view-data'
 import resolver from '@/support/routes-resolver'
 import About from '@/fragments/about/About.vue'
+import EditJobs from '@/fragments/forms/map-form/components/optimization/components/job-list/EditJobs.vue'
 import RouteUtils from '@/support/route-utils'
 import appConfig from '@/config/app-config'
 import constants from '@/resources/constants'
@@ -25,6 +26,7 @@ export default {
     isAltitudeModalOpen: false,
     isSettingsOpen: false,
     isAboutOpen: false,
+    isJobsOpen: false,
     simpleMapSearchHeight: 65,
     defaultZoom: appConfig.initialZoomLevel,
     mapViewData: new MapViewData(),
@@ -45,6 +47,7 @@ export default {
     SimplePlaceSearch,
     Altitude,
     About,
+    EditJobs,
     Settings,
     PlacesCarousel,
     ResizeObserver
@@ -600,6 +603,10 @@ export default {
         this.$router.push({ name: 'Maps' })
       }
     },
+
+    closeJobsModal () {
+      this.isJobsOpen = false
+    },
     /**
      * When an avoid polygons option changes,
      * merge the avoid-polygons-array into a multiPolygon and
@@ -680,6 +687,9 @@ export default {
     })
     EventBus.$on('showAboutModal', () => {
       context.isAboutOpen = true
+    })
+    EventBus.$on('showJobsModal', () => {
+      context.isJobsOpen = true
     })
     EventBus.$on('loadAvoidPolygons', (avoidPolygons) => {
       context.localAvoidPolygons = avoidPolygons

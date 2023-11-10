@@ -65,6 +65,13 @@
         <about></about>
       </box>
     </v-dialog>
+
+    <v-dialog v-model="isJobsOpen" max-width="600" :persistent="true" attach="body">
+      <box background="white" v-if="isJobsOpen" class="jobs-modal" resizable closable @closed="closeJobsModal()">
+        <h3 slot="header">{{$t('maps.jobs')}}</h3>
+        <edit-jobs></edit-jobs>
+      </box>
+    </v-dialog>
   </div>
 </template>
 

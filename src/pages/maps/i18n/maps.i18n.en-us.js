@@ -9,6 +9,7 @@ export default {
     settings: 'Settings',
     toggleAccessibleMode: 'Toggle accessible mode',
     aboutTitle: 'About ORS',
+    jobs: 'Edit Jobs',
     updateSearch: 'Search this area',
     updateSearchAfterZoomOrCenterChange: 'Update search after zoom or center change',
     pageNotFound: 'Page not not found. Check if the URL is not malformed'

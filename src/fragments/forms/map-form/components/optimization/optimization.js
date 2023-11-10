@@ -34,7 +34,8 @@ export default {
     vehicles: [{'id':1,'profile':'driving-car','start':[2.35044,48.71764],'end':[2.35044,48.71764],'capacity':[4],'skills':[1,14],'time_window':[28800,43200]},
       {'id':2,'profile':'driving-car','start':[2.35044,48.71764],'end':[2.35044,48.71764],'capacity':[4],'skills':[2,14],'time_window':[28800,43200]}],
     roundTripActive: false,
-    showManageJobsTooltip: true
+    showManageJobsTooltip: true,
+    editJobsClicked: false
   }),
   components: {
     PlaceInput,
@@ -145,6 +146,8 @@ export default {
       })
     },
     manageJobs(jobId) {
+      this.editJobsClicked = true
+      EventBus.$emit('showJobsModal')
       // TODO: Have Job Management in separate component. Popup using Box component.
       console.log(jobId)
       this.showError(this.$t('global.notImplemented'), {timeout: 3000})
