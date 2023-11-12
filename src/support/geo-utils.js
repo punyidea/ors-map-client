@@ -47,23 +47,23 @@ const geoUtils = {
    * @param index
    * @param lastIndexKey
    * @param {Boolean} isRoute
-   * @returns {Array} of markers
+   * @returns {String} of markers
    */
   getMarkerColor: (index, lastIndexKey, isRoute) => {
-    let coloredMarkerName
+    let color
 
     if (isRoute) {
       if (index === 0) {
-        coloredMarkerName = 'green'
+        color = 'green'
       } else if (lastIndexKey === index) {
-        coloredMarkerName = 'red'
+        color = 'red'
       } else {
-        coloredMarkerName = '#206fe2'
+        color = '#206fe2'
       }
     } else {
-      coloredMarkerName = '#206fe2'
+      color = '#206fe2'
     }
-    return coloredMarkerName
+    return color
   },
 
   /**
@@ -82,20 +82,20 @@ const geoUtils = {
       if (place.lng && place.lat) {
         // Define the marker color
         const lastIndexKey = places.length - 1
-        let coloredMarkerName = geoUtils.getMarkerColor(key, lastIndexKey, isRoute)
+        let color = geoUtils.getMarkerColor(key, lastIndexKey, isRoute)
 
         if (highlightedPlace) {
           if (place.equals(highlightedPlace)) {
-            coloredMarkerName = 'red'
+            color = 'red'
           }
         } else if (Number(key) === 0 && !isRoute || places.length === 1) {
-          coloredMarkerName = 'red'
+          color = 'red'
         }
 
         let buildAsRoute = isRoute && places.length > 1
 
         // Build the marker
-        const markerIcon = geoUtils.buildMarkerIcon(coloredMarkerName, key, buildAsRoute)
+        const markerIcon = geoUtils.buildMarkerIcon(color, key, buildAsRoute)
         const marker = {
           position: {
             lng: place.lng,
