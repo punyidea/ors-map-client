@@ -1,4 +1,4 @@
-.import-btn {
+.edit-jobs-btn {
   padding: 5px;
   min-width: 0;
   float: right;
@@ -6,10 +6,10 @@
   height: 24px;
 }
 
-.export-btn {
-  padding: 5px;
-  min-width: 0;
-  float: right;
-  margin: 0;
-  height: 24px;
+.remove-btn {
+  align-self: end;
+}
+
+.edit-btn {
+
 }

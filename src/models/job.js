@@ -6,17 +6,36 @@ class Job extends Place {
 
     this.location = this.coordinates
 
-    this.service = options.service || 300 // time spent at job
-    this.amount = options.amount || [1]
-    this.skills = options.skills || []
-    this.time_windows = options.time_windows || []
     this.id = options.id || null
+    this.service = options.service || 0 // time spent at job
+    this.skills = options.skills || []
+    this.priority = options.priority || 0
+    this.time_windows = options.time_windows || []
   }
 
   static fromPlace(place) {
     return new Job(place.lng, place.lat, place.placeName, {
-      placeId: place.placeId
+      id: place.placeId
     })
+  }
+
+  /**
+   * @param {String} jobJSONString
+   */
+  static fromJSON(jobJSONString) {
+    let job = JSON.parse(jobJSONString)
+    return new Job(job.location[0], job.location[1], job.placeName, {
+      id: job.id,
+      service: job.service,
+      skills: job.skills,
+      priority: job.priority,
+      time_windows: job.time_windows,
+      resolve: true
+    })
+  }
+
+  clone() {
+    return Job.fromJSON(this.toJSON(true))
   }
 
   /**
@@ -27,7 +46,7 @@ class Job extends Place {
     this.id = id
   }
 
-  toJSON() {
+  toJSON(stringify = false) {
     let out = {
       'id': this.id,
       'location': this.location,
@@ -41,7 +60,15 @@ class Job extends Place {
     if (this.time_windows.length) {
       out['time_windows'] = this.time_windows
     }
+    return stringify ? JSON.stringify(out) : out
+  }
 
+  static jobsFromFeatures(jobs) {
+    const out = []
+    for (const job of jobs) {
+      jobs.push(Job.fromJSON(job))
+    }
+    return out
   }
 }
 export default Job

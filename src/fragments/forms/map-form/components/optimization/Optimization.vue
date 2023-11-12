@@ -1,9 +1,9 @@
 <template>
   <div>
     <v-form @submit.prevent style="background:white">
-      <template  v-if="places.length > 0">
+      <template>
         <template v-if="mapViewData">
-          <optimization-details v-if="mapViewData && mapViewData.hasPlaces()" :map-view-data="mapViewData"></optimization-details>
+          <optimization-details v-if="mapViewData.hasRoutes()" :map-view-data="mapViewData"></optimization-details>
           <br>
         </template>
         <div class="optimization-heading">
@@ -18,43 +18,20 @@
             {{ $t('optimization.manageJobs') }}
           </v-tooltip>
         </div>
-<!--        <ul class="job-inputs">-->
-<!--          <li :key="index" v-for="(place, index) in jobs">-->
-<!--            <v-layout row >-->
-<!--              <v-flex v-bind="{[ $store.getters.mode === constants.modes.optimization? 'xs11' : 'xs12']: true}">-->
-<!--                <place-input :ref="'job'+index"-->
-<!--                             id-postfix="job"-->
-<!--                             :support-directions="false"-->
-<!--                             :support-search="false"-->
-<!--                             pick-place-supported-->
-<!--                             :box="places.length === 1"-->
-<!--                             :index="index"-->
-<!--                             :model="places[index]"-->
-<!--                             :single="places.length === 1"-->
-<!--                             :is-last="(places.length -1) === index && index !== 0"-->
-<!--                             @selected="selectPlace"-->
-<!--                             @removeInput="removePlaceInput"-->
-<!--                             @addInput="addPlaceInput"-->
-<!--                             @cleared="placeCleared">-->
-<!--                </place-input>-->
-<!--              </v-flex>-->
-<!--            </v-layout >-->
-<!--          </li>-->
-<!--        </ul>-->
-        <job-list :jobs="jobs"></job-list>
-        <div class="optimization-heading">
-          {{ $t('optimization.vehicles') }}
-          <v-tooltip bottom style="float: right">
-            <template v-slot:activator="{ on }">
-              <v-btn class="no-padding" v-if="$mdAndUpResolution"
-                     icon small @click="manageJobs">
-                <v-icon :title="$t('optimization.manageVehicles')" color="dark" :medium="$lowResolution">settings</v-icon>
-              </v-btn>
-            </template>
-            {{ $t('optimization.manageVehicles') }}
-          </v-tooltip>
-        </div>
       </template>
+      <job-list :jobs="jobs"></job-list>
+      <div class="optimization-heading">
+        {{ $t('optimization.vehicles') }}
+        <v-tooltip bottom style="float: right">
+          <template v-slot:activator="{ on }">
+            <v-btn class="no-padding" v-if="$mdAndUpResolution"
+                   icon small @click="manageJobs">
+              <v-icon :title="$t('optimization.manageVehicles')" color="dark" :medium="$lowResolution">settings</v-icon>
+            </v-btn>
+          </template>
+          {{ $t('optimization.manageVehicles') }}
+        </v-tooltip>
+      </div>
       <v-card elevation="3" style="margin: 5px;" v-for="(v, i) in vehicles" :key="i">
         <v-card-title style="padding-bottom: 0;"><v-icon :color="vehicleColors(v.id)" style="padding: 0 5px 0 0">local_shipping</v-icon><b>Vehicle {{v.id}} ({{v.profile}})</b></v-card-title>
         <v-card-text>
@@ -64,7 +41,7 @@
         </v-card-text>
       </v-card>
       <v-layout row class="form-actions-btns">
-        <form-actions :place-inputs="places.length" :disabled-actions="disabledActions"
+        <form-actions :place-inputs="jobs.length" :disabled-actions="disabledActions"
                       @addPlaceInput="addPlaceInput"
                       @clearPlaces="clearPlaces"
                       @reverseRoute="reverseRoute"
@@ -72,7 +49,7 @@
         </form-actions>
       </v-layout>
     </v-form>
-    <edit-jobs :jobs="jobs"></edit-jobs>
+    <edit-jobs v-if="showJobManagement" :jobs="jobs" @jobsChanged="jobsChanged" @close="showJobManagement=false"></edit-jobs>
   </div>
 </template>
 <script src="./optimization.js">

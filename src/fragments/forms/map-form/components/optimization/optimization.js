@@ -8,7 +8,6 @@ import AppMode from '@/support/app-modes/app-mode'
 import MapViewData from '@/models/map-view-data'
 import constants from '@/resources/constants'
 import appConfig from '@/config/app-config'
-import Place from '@/models/place'
 import {EventBus} from '@/common/event-bus'
 
 // Local components
@@ -17,13 +16,13 @@ import OptimizationDetails from './components/optimization-details/OptimizationD
 import JobList from './components/job-list/JobList.vue'
 import EditJobs from './components/job-list/EditJobs.vue'
 import Job from '@/models/job'
+import Vehicle from '@/models/vehicle'
 
 export default {
   mixins: [MapFormMixin],
   data: () => ({
     mode: constants.modes.optimization,
     mapViewData: new MapViewData(),
-    places: [new Place()],
     jobs: [
       // {'id':1,'service':300,'amount':[1],'location':[1.98465,48.70329],'skills':[1],'time_windows':[[32400,36000]]},
       // {'id':2,'service':300,'amount':[1],'location':[2.03655,48.61128],'skills':[1]},
@@ -32,11 +31,13 @@ export default {
       // {'id':5,'service':300,'amount':[1],'location':[2.28325,48.5958],'skills':[14]},
       // {'id':6,'service':300,'amount':[1],'location':[2.89357,48.90736],'skills':[14]}
     ],
-    vehicles: [{'id':1,'profile':'driving-car','start':[2.35044,48.71764],'end':[2.35044,48.71764],'capacity':[4],'skills':[1,14],'time_window':[28800,43200]},
-      {'id':2,'profile':'driving-car','start':[2.35044,48.71764],'end':[2.35044,48.71764],'capacity':[4],'skills':[2,14],'time_window':[28800,43200]}],
+    vehicles: [Vehicle.fromJSON('{"id":1,"profile":"driving-car","start":[2.3414611816406254, 48.71401514864314],"end":[2.3414611816406254, 48.71401514864314],"capacity":[4],"time_window":[28800,43200]}'),
+      Vehicle.fromJSON('{"id":2,"profile":"driving-car","start":[2.3717594146728516, 48.710107345900575],"end":[2.3717594146728516, 48.710107345900575],"capacity":[4],"time_window":[28800,43200]}')],
+    // vehicles: [Vehicle.fromJSON('{"id":1,"profile":"driving-car","start":[2.3414611816406254, 48.71401514864314],"end":[2.3414611816406254, 48.71401514864314],"capacity":[4],"skills":[1,14],"time_window":[28800,43200]}'),
+    //   Vehicle.fromJSON('{"id":2,"profile":"driving-car","start":[2.3717594146728516, 48.710107345900575],"end":[2.3717594146728516, 48.710107345900575],"capacity":[4],"skills":[2,14],"time_window":[28800,43200]}')],
     roundTripActive: false,
     showManageJobsTooltip: true,
-    editJobsClicked: false
+    showJobManagement: false
   }),
   components: {
     PlaceInput,
@@ -73,7 +74,8 @@ export default {
     EventBus.$on('mapViewDataUploaded', (mapViewData) => {
       if (context.active) {
         context.mapViewData = mapViewData
-        context.places = mapViewData.places
+        context.jobs = mapViewData.jobs
+        context.vehicles = mapViewData.vehicles
       }
     })
 
@@ -84,7 +86,8 @@ export default {
     EventBus.$on('mapViewDataChanged', () => {
       if (!context.active) {
         context.mapViewData = new MapViewData()
-        context.places = [new Place()]
+        context.jobs = []
+        context.vehicles = []
       }
     })
 
@@ -102,23 +105,17 @@ export default {
     // the place coordinates and re-render the map
     EventBus.$on('markerDragged', (marker) => {
       if (context.active) {
-        const place = new Place(marker.position.lng, marker.position.lat)
-        context.places[marker.inputIndex] = place
-        context.places[marker.inputIndex].resolve().then(() => {
-          context.updateAppRoute()
-        })
-      }
-    })
+        if (marker.text.startsWith('V')) {
+          let vehicle = context.vehicles[parseInt(marker.text.slice(1))-1]
+          console.log(vehicle)
 
-    EventBus.$on('setInputPlace', (data) => {
-      if (context.active) {
-        context.places[data.pickPlaceIndex] = data.place
-        let filledPlaces = context.getFilledPlaces()
-        if (filledPlaces.length > 0) {
-          context.updateAppRoute()
         } else {
-          context.setSidebarIsOpen(true)
-          context.$forceUpdate()
+          let job = context.jobs[parseInt(marker.text)-1]
+          console.log(job)
+          job.setLngLat(marker.position.lng, marker.position.lat)
+          job.resolve().then(() => {
+            context.optimizeJobs()
+          })
         }
       }
     })
@@ -128,7 +125,8 @@ export default {
       if (this.$store.getters.mode === constants.modes.optimization) {
         this.loadData()
       } else {
-        this.places = [new Place()]
+        this.jobs = []
+        this.vehicles = []
       }
     }
   },
@@ -138,43 +136,20 @@ export default {
      * @param {*} data {latLng: ..., place:...}
      */
     addJob (data) {
-      this.places.push(new Place(data.latLng.lng, data.latLng.lat, '', { resolve: true }))
+      const job = Job.fromPlace(data.place)
+      job.setId(this.jobs.length + 1)
       const context = this
-      this.places.at(-1).resolve().then(() => {
-        context.updateAppRoute()
+      job.resolve().then(() => {
+        context.jobs.push(job)
+        context.manageJobs(job.id)
       }).catch((err) => {
         console.log(err)
         context.showError(this.$t('optimization.couldNotResolveTheJobLocation'), { timeout: 0 })
       })
     },
     manageJobs(jobId) {
-      this.editJobsClicked = true
-      EventBus.$emit('showJobsModal')
-    },
-    /**
-     * Set a suggested place as the selected one for a given place input
-     * @param {*} data - can be the place object or an object containing the place
-     */
-    selectPlace (data) {
-      if (data.place) {
-        this.places[data.index] = data.place
-        this.$store.commit('mode', constants.modes.optimization)
-        const appMode = new AppMode(this.$store.getters.mode)
-
-        // Define new app route
-        const route = appMode.getRoute(this.places)
-        if (Object.keys(route.params).length > 1) { // params contains data and placeName? props
-          this.$store.commit('cleanMap', this.$store.getters.appRouteData.places.length === 0)
-          this.$router.push(route)
-        }
-      }
-    },
-    /**
-     * Reset the place input
-     */
-    placeCleared (index) {
-      this.places[index] = new Place()
-      this.updateAppRoute()
+      this.showJobManagement = true
+      EventBus.$emit('showJobsModal', jobId)
     },
     /**
      * After each change on the map search we redirect the user to the built target app route
@@ -182,11 +157,11 @@ export default {
      * url synchronized with the current map status
      */
     updateAppRoute () {
-      const places = this.getFilledPlaces()
+      const jobs = this.jobs
       this.$store.commit('mode', constants.modes.optimization)
       // TODO: adjust this for Jobs
       const appMode = new AppMode(this.$store.getters.mode)
-      const route = appMode.getRoute(places)
+      const route = appMode.getRoute(jobs)
       if (Object.keys(route.params).length > 1) {// params contains data and placeName? props
         this.$router.push(route)
       }
@@ -209,28 +184,18 @@ export default {
       this.updateAppRoute()
     },
     /**
-     * Remove a place input at a given index
-     * @param {*} index
-     */
-    removePlaceInput (index) {
-      this.places.splice(index, 1)
-      this.updateAppRoute()
-    },
-    /**
      * Request and draw a route based on the value of multiples places input
      * @returns {Promise}
      */
     optimizeJobs () {
       const context = this
       return new Promise((resolve) => {
-        const places = context.getFilledPlaces()
-
-        if (places.length > 0) {
+        if (context.jobs.length > 0) {
           context.showInfo(context.$t('optimization.optimizeJobs'), { timeout: 0 })
           EventBus.$emit('showLoading', true)
 
           // Calculate the route
-          Optimization(places, context.vehicles).then(data => {
+          Optimization(context.jobs, context.vehicles).then(data => {
             data.options.translations = context.$t('global.units')
             data.options.translations.polygon = this.$t('global.polygon')
 
@@ -238,6 +203,8 @@ export default {
             if (data) {
               MapViewDataBuilder.buildMapData(data, context.$store.getters.appRouteData).then((mapViewData) => {
                 context.mapViewData = mapViewData
+                context.mapViewData.jobs = context.jobs
+                context.mapViewData.vehicles = context.vehicles
                 EventBus.$emit('mapViewDataChanged', mapViewData)
                 EventBus.$emit('newInfoAvailable')
                 context.showSuccess(context.$t('optimization.optimizationResultReady'))
@@ -289,34 +256,47 @@ export default {
         // Empty the array and populate it with the
         // places from the appRoute without changing the
         // object reference because it is a prop
-        this.places = this.$store.getters.appRouteData.places
-        // let context = this
-        // for (const job of this.jobs) {
-        //   let place = new Place(job.location[0], job.location[1])
-        //   place.resolve().then(
-        //     context.places.push(place)
-        //   )
-        // }
+        this.jobs = this.$store.getters.appRouteData.jobs
+        let places = this.$store.getters.appRouteData.places
         // TODO: load jobs
         let storedJobs = localStorage.getItem('jobs')
+        const jobs = []
         if (storedJobs) {
-          let jobs = JSON.parse(storedJobs)
-          for (const job of jobs) {
-            this.jobs.push(Job.fromJSON(job))
+          for (const job of JSON.parse(storedJobs)) {
+            jobs.push(Job.fromJSON(job))
           }
-        } else if (this.places.length > 0) {
-          const jobs = []
-          for (const [i, place] of this.places.entries()) {
+        } else if (places.length > 0) {
+          for (const [i, place] of places.entries()) {
             const job = Job.fromPlace(place)
-            job.setId(i+1)
+            job.setId(i + 1)
             jobs.push(job)
           }
-          this.jobs = jobs
-          this.optimizeJobs()
+        }
+        this.jobs = jobs
+        if (this.jobs) {
+          if (this.vehicles) {
+            this.optimizeJobs()
+          } else {
+            this.showError('No vehicles given.')
+          }
         } else {
-          this.addPlaceInput()
+          this.showError('No jobs given. Please add some Jobs to optimize.')
         }
       }
+    },
+    jobsChanged(editedJobs) {
+      let newJobs = []
+      for (const job of editedJobs) {
+        newJobs.push(job.clone())
+      }
+      this.jobs = newJobs
+    },
+    vehiclesChanged(editedVehicles) {
+      let newVehicles = []
+      for (const vehicle of editedVehicles) {
+        newVehicles.push(vehicle.clone())
+      }
+      this.vehicles = newVehicles
     },
     vehicleColors(vehicleId) {
       return constants.vehicleColors[vehicleId]

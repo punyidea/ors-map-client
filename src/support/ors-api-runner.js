@@ -351,7 +351,7 @@ const Optimization = (jobs, vehicles = []) => {
   })
   return new Promise((resolve, reject) => {
     OrsParamsParser.buildOptimizationArgs(jobs, vehicles).then(args => {
-      let mock = true  // TODO: remove Mock
+      let mock = false  // TODO: remove Mock
       console.log(args)
       if (mock) {
         resolve({ options: { origin: constants.dataOrigins.optimization, apiVersion: constants.apiVersion }, content: optimizationMockData })

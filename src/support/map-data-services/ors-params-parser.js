@@ -188,9 +188,16 @@ const orsParamsParser = {
    * @returns {Object} args
    */
   buildOptimizationArgs: (jobs, vehicles) => {
-    console.log(jobs, vehicles)
+    let jsonJobs = []
+    let jsonVehicles = []
+    for (const job of jobs) {
+      jsonJobs.push(job.toJSON())
+    }
+    for (const v of vehicles) {
+      jsonVehicles.push(v.toJSON())
+    }
     return new Promise((resolve) => {
-      resolve({'jobs': jobs, 'vehicles': vehicles,'options':{'g':'true'}})
+      resolve({'jobs': jsonJobs, 'vehicles': jsonVehicles,'options':{'g':'true'}})
     })
   },
 

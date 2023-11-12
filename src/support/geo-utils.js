@@ -8,6 +8,7 @@ import HtmlMarker from '@/fragments/html-marker/HtmlMarker'
 // The import below will add some methods to Leaflet.GeometryUtil
 // Even if it is not accessed within this class, it is being used!
 import 'leaflet-geometryutil'
+import constants from '@/resources/constants'
 
 // noinspection GrazieInspection
 const geoUtils = {
@@ -590,6 +591,74 @@ const geoUtils = {
       lng -= 360
     }
     return lng
+  },
+  buildOptimizationMarkers(jobs, vehicles) {
+    const markers = []
+    for (const job of jobs) {
+      if (job.lng && job.lat) {
+        // Build the marker
+        let propsData = {
+          color: 'green',
+          markerNumber: job.id.toString()
+        }
+        const htmlMarkerClass = Vue.extend(HtmlMarker)
+        const htmlIconInstance = new htmlMarkerClass({
+          propsData
+        })
+        htmlIconInstance.$mount()
+        let markerHtml = htmlIconInstance.$el.innerHTML
+
+        const markerIcon = Leaflet.divIcon({
+          className: 'custom-div-icon',
+          html: markerHtml,
+          iconSize: [30, 42],
+          iconAnchor: [15, 42]
+        })
+        const marker = {
+          position: {
+            lng: job.lng,
+            lat: job.lat
+          },
+          icon: markerIcon,
+          label: `Job ${job.id} - ${job.lng},${job.lat}`,
+          job: job
+        }
+        markers.push(marker)
+      }
+    }
+    for (const v of vehicles) {
+      if (v.lng && v.lat) {
+        // Build the marker
+        let propsData = {
+          color: constants.vehicleColors[v.id],
+          markerNumber: `V ${v.id.toString()}`
+        }
+        const htmlMarkerClass = Vue.extend(HtmlMarker)
+        const htmlIconInstance = new htmlMarkerClass({
+          propsData
+        })
+        htmlIconInstance.$mount()
+        let markerHtml = htmlIconInstance.$el.innerHTML
+
+        const markerIcon = Leaflet.divIcon({
+          className: 'custom-div-icon',
+          html: markerHtml,
+          iconSize: [30, 42],
+          iconAnchor: [15, 42]
+        })
+        const marker = {
+          position: {
+            lng: v.lng,
+            lat: v.lat
+          },
+          icon: markerIcon,
+          label: `Vehicle ${v.id} - ${v.lng},${v.lat}`,
+          vehicle: v
+        }
+        markers.push(marker)
+      }
+    }
+    return markers
   }
 }
 export default geoUtils

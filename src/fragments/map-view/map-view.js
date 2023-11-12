@@ -392,7 +392,12 @@ export default {
       let markersMapViewData = this.localMapViewData.clone()
       if (markersMapViewData.places.length > 0) {
         let isRoute = markersMapViewData.hasRoutes() || this.mode === constants.modes.directions
-        let markers = GeoUtils.buildMarkers(markersMapViewData.places, isRoute, this.focusedPlace)
+        let markers = []
+        if (this.mode === constants.modes.optimization) {
+          markers = GeoUtils.buildOptimizationMarkers(markersMapViewData.jobs, markersMapViewData.vehicles)
+        } else {
+          markers = GeoUtils.buildMarkers(markersMapViewData.places, isRoute, this.focusedPlace)
+        }
         markers = this.$root.appHooks.run('markersCreated', markers)
         return markers
       }
@@ -1023,6 +1028,7 @@ export default {
       if (markerIndex !== null) {
         const marker = this.markers[markerIndex]
         marker.inputIndex = markerIndex
+        marker.text = event.originalEvent.target.innerText
         this.$emit('markerDragged', marker)
       }
     },

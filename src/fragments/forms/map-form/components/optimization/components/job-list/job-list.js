@@ -1,6 +1,6 @@
 export default {
   data: () => ({
-    jobExtended: [true, false, true]
+    jobExtended: [true]
   }),
   props: {
     jobs: {

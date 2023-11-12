@@ -23,7 +23,7 @@ class OptimizationMode {
   }
 
   /**
-   * Build a directions route
+   * Build an optimization route
    * @param {*} appRouteData
    * @returns {Object} route like {name: 'MapDirections', params: {...} }
    */
