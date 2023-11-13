@@ -135,7 +135,7 @@ export default {
       if (this.markers[index].job) {
         EventBus.$emit('editJob', this.markers[index].job.id)
       } else if (this.markers[index].vehicle) {
-        this.$emit('showVehiclesModal', index)
+        EventBus.$emit('editVehicle', this.markers[index].vehicle.id)
       }
     },
     markAsDirectFromHere (index) {

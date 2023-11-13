@@ -25,7 +25,7 @@
         <v-tooltip bottom style="float: right">
           <template v-slot:activator="{ on }">
             <v-btn class="no-padding" v-if="$mdAndUpResolution"
-                   icon small @click="manageJobs">
+                   icon small @click="manageVehicles">
               <v-icon :title="$t('optimization.manageVehicles')" color="dark" :medium="$lowResolution">settings</v-icon>
             </v-btn>
           </template>
@@ -50,6 +50,7 @@
       </v-layout>
     </v-form>
     <edit-jobs v-if="showJobManagement" :jobs="jobs" @jobsChanged="jobsChanged" @close="showJobManagement=false"></edit-jobs>
+    <edit-vehicles v-if="showVehicleManagement" :vehicles="vehicles" @vehiclesChanged="vehiclesChanged" @close="showVehicleManagement=false"></edit-vehicles>
   </div>
 </template>
 <script src="./optimization.js">

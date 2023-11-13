@@ -15,6 +15,7 @@ import MapFormMixin from '../map-form-mixin'
 import OptimizationDetails from './components/optimization-details/OptimizationDetails'
 import JobList from './components/job-list/JobList.vue'
 import EditJobs from './components/job-list/EditJobs.vue'
+import EditVehicles from './components/vehicle-list/edit-vehicles'
 import Job from '@/models/job'
 import Vehicle from '@/models/vehicle'
 
@@ -37,7 +38,8 @@ export default {
     //   Vehicle.fromJSON('{"id":2,"profile":"driving-car","start":[2.3717594146728516, 48.710107345900575],"end":[2.3717594146728516, 48.710107345900575],"capacity":[4],"skills":[2,14],"time_window":[28800,43200]}')],
     roundTripActive: false,
     showManageJobsTooltip: true,
-    showJobManagement: false
+    showJobManagement: false,
+    showVehicleManagement: false
   }),
   components: {
     PlaceInput,
@@ -45,7 +47,8 @@ export default {
     FormActions,
     OptimizationDetails,
     JobList,
-    EditJobs
+    EditJobs,
+    EditVehicles,
   },
   computed: {
     disabledActions () {
@@ -106,6 +109,11 @@ export default {
       context.addVehicle(data)
     })
 
+    // On popup edit click -> edit vehicle
+    EventBus.$on('editVehicle', (index) => {
+      context.manageVehicles(index)
+    })
+
     // When a marker drag finishes, update
     // the place coordinates and re-render the map
     EventBus.$on('markerDragged', (marker) => {
@@ -154,6 +162,23 @@ export default {
     manageJobs(jobId) {
       this.showJobManagement = true
       EventBus.$emit('showJobsModal', jobId)
+    },
+
+    addVehicle (data) {
+      const vehicle = Job.fromPlace(data.place)
+      vehicle.setId(this.vehicles.length + 1)
+      const context = this
+      vehicle.resolve().then(() => {
+        context.vehicles.push(vehicle)
+        context.manageVehicles(vehicle.id)
+      }).catch((err) => {
+        console.log(err)
+        context.showError(this.$t('optimization.couldNotResolveTheVehicleLocation'), { timeout: 0 })
+      })
+    },
+    manageVehicles(vehicleId) {
+      this.showVehicleManagement = true
+      EventBus.$emit('showVehiclesModal', vehicleId)
     },
     /**
      * After each change on the map search we redirect the user to the built target app route

@@ -1,0 +1,15 @@
+.edit-vehicles-btn {
+  padding: 5px;
+  min-width: 0;
+  float: right;
+  margin: 0;
+  height: 24px;
+}
+
+.remove-btn {
+  align-self: end;
+}
+
+.edit-btn {
+
+}

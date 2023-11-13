@@ -1,0 +1,54 @@
+<template>
+  <div>
+    <v-dialog v-model="isVehiclesOpen" max-width="600" :persistent="true" attach="body">
+      <box background="white" class="vehicles-modal" resizable closable @closed="closeVehiclesModal()">
+        <h3 slot="header" style="padding-right: 55px">
+          {{ $t('optimization.manageVehicles') }}  {{ `editing ${editId}`}}
+          <v-btn class="edit-vehicles-btn" flat :style="{background: 'white'}" @click="exportVehicles()" :title="$t('optimization.exportVehicleFile')">
+            <v-icon color="primary">cloud_download</v-icon>
+          </v-btn>
+          <v-btn class="edit-vehicles-btn" flat :style="{background: 'white'}" @click="importVehicles()" :title="$t('optimization.importJobFile')">
+            <v-icon color="primary">cloud_upload</v-icon>
+          </v-btn>
+          <v-btn class="edit-vehicles-btn" flat :style="{background: 'white', 'padding-right':'15px'}" @click="saveVehicles()" :title="$t('optimization.saveJobs')">
+            <v-icon color="success">save</v-icon>
+          </v-btn>
+        </h3>
+        <v-card @click="editId = i+1" elevation="3" style="margin: 5px;cursor: pointer" v-for="(v, i) in editVehicles" :key="i">
+          <v-card-title style="padding-bottom: 0;">
+            <div><b>Vehicle {{ v.id }}</b></div>
+            <v-btn v-if="editId === v.id" class="edit-btn" flat small :style="{background: 'white'}" @click.stop="editId = 0" :title="$t('optimization.editVehicle')">
+              <v-icon color="primary">edit</v-icon>
+            </v-btn>
+            <v-btn class="remove-btn" small icon :style="{background: 'white'}" @click.stop="removeVehicle(v.id)" :title="$t('optimization.removeVehicle')">
+              <v-icon color="primary">delete</v-icon>
+            </v-btn>
+          </v-card-title>
+          <v-card-text>
+            <div v-if="editId !== v.id">Location: {{ v }}</div>
+            <div v-else>
+              <v-text-field v-model="editVehicles[i].start" :persistent-hint="true" :hint="'Start'"></v-text-field>
+              <v-text-field v-model="editVehicles[i].end" :persistent-hint="true" :hint="'End'"></v-text-field>
+              <v-text-field v-model="editVehicles[i].amount" :persistent-hint="true" :hint="'Amount'"></v-text-field>
+              <v-text-field v-model="editVehicles[i].skills" :persistent-hint="true" :hint="'Skills needed for this Job'"></v-text-field>
+            </div>
+          </v-card-text>
+        </v-card>
+        <v-layout row :wrap="$lowResolution">
+          <v-spacer class="hidden-md-and-down"></v-spacer>
+          <v-flex text-xs-right xs12 sm5 md7 :class="{'ml-2': $vuetify.breakpoint.smAndDown, 'mb-2': $lowResolution}">
+            <v-btn :block="$lowResolution" color="primary" :title="$t('settings.restoreDefaults')"
+                   @click="closeVehiclesModal">{{$t('global.cancel')}}</v-btn>
+          </v-flex>
+          <v-flex text-xs-right xs12 sm3 md3 :class="{'ml-2': $vuetify.breakpoint.smAndDown}">
+            <v-btn :block="$lowResolution" color="success" :title="$t('global.save')" @click="saveVehicles">
+              {{$t('global.save')}}</v-btn>
+          </v-flex>
+        </v-layout>
+      </box>
+    </v-dialog>
+  </div>
+</template>
+
+<script src="./edit-vehicles.js"></script>
+<style scoped src="./edit-vehicles.css"></style>
