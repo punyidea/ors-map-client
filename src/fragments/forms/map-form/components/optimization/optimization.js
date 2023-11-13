@@ -108,14 +108,13 @@ export default {
         if (marker.text.startsWith('V')) {
           let vehicle = context.vehicles[parseInt(marker.text.slice(1))-1]
           console.log(vehicle)
-
+          vehicle.setLngLat(marker.position.lng, marker.position.lat)
+          context.optimizeJobs()
         } else {
           let job = context.jobs[parseInt(marker.text)-1]
           console.log(job)
           job.setLngLat(marker.position.lng, marker.position.lat)
-          job.resolve().then(() => {
-            context.optimizeJobs()
-          })
+          context.optimizeJobs()
         }
       }
     })
@@ -290,6 +289,7 @@ export default {
         newJobs.push(job.clone())
       }
       this.jobs = newJobs
+      this.optimizeJobs()
     },
     vehiclesChanged(editedVehicles) {
       let newVehicles = []

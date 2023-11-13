@@ -82,6 +82,12 @@ class Vehicle extends Place {
     }
     return out
   }
+
+  setLngLat (lng, lat) {
+    super.setLngLat(lng, lat)
+    this.start = this.coordinates
+    this.end = this.coordinates
+  }
 }
 
 export default Vehicle
