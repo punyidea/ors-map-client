@@ -7,10 +7,10 @@
           <v-btn class="edit-vehicles-btn" flat :style="{background: 'white'}" @click="exportVehicles()" :title="$t('optimization.exportVehicleFile')">
             <v-icon color="primary">cloud_download</v-icon>
           </v-btn>
-          <v-btn class="edit-vehicles-btn" flat :style="{background: 'white'}" @click="importVehicles()" :title="$t('optimization.importJobFile')">
+          <v-btn class="edit-vehicles-btn" flat :style="{background: 'white'}" @click="importVehicles()" :title="$t('optimization.importVehicleFile')">
             <v-icon color="primary">cloud_upload</v-icon>
           </v-btn>
-          <v-btn class="edit-vehicles-btn" flat :style="{background: 'white', 'padding-right':'15px'}" @click="saveVehicles()" :title="$t('optimization.saveJobs')">
+          <v-btn class="edit-vehicles-btn" flat :style="{background: 'white', 'padding-right':'15px'}" @click="saveVehicles()" :title="$t('optimization.saveVehicles')">
             <v-icon color="success">save</v-icon>
           </v-btn>
         </h3>
@@ -27,10 +27,10 @@
           <v-card-text>
             <div v-if="editId !== v.id">Location: {{ v }}</div>
             <div v-else>
-              <v-text-field v-model="editVehicles[i].start" :persistent-hint="true" :hint="'Start'"></v-text-field>
-              <v-text-field v-model="editVehicles[i].end" :persistent-hint="true" :hint="'End'"></v-text-field>
-              <v-text-field v-model="editVehicles[i].amount" :persistent-hint="true" :hint="'Amount'"></v-text-field>
-              <v-text-field v-model="editVehicles[i].skills" :persistent-hint="true" :hint="'Skills needed for this Job'"></v-text-field>
+              <v-text-field v-model="editVehicles[i].start" :persistent-hint="true" :hint="'Start & End'"></v-text-field>
+              <v-text-field v-model.number="editVehicles[i].capacity[0]" :persistent-hint="true" :hint="'Capacity'"></v-text-field>
+              <v-text-field v-model.number="editVehicles[i].skills[0]" :persistent-hint="true" :hint="'Skills of this Vehicle'"></v-text-field>
+              <v-text-field v-model="editVehicles[i].time_window" :persistent-hint="true" :hint="'Working time window of this Vehicle (in seconds passed since 00:00 or timestamp'"></v-text-field>
             </div>
           </v-card-text>
         </v-card>

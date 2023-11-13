@@ -40,6 +40,7 @@
       @setInputPlace="setInputPlace"
       @markerClicked="markerClicked"
       @addJob="addJob"
+      @addVehicle="addVehicle"
     >
     </map-view>
 

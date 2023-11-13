@@ -21,7 +21,7 @@ class OptimizationBuilder {
     const mapViewData = new MapViewData()
     const context = this
     return new Promise((resolve) => {
-      mapViewData.places = context.buildPlaces()
+      // mapViewData.places = context.buildPlaces()
       mapViewData.rawData = Utils.clone(context.responseData)
       mapViewData.routes = context.buildRoutes()
       mapViewData.isRouteData = mapViewData.hasRoutes()

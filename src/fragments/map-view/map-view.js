@@ -192,6 +192,9 @@ export default {
     }
   },
   computed: {
+    theme() {
+      return theme
+    },
 
     showMyLocationControl () {
       return this.supportsMyLocationBtn && !this.isAltitudeModalOpen && this.showControls
@@ -392,14 +395,11 @@ export default {
       let markersMapViewData = this.localMapViewData.clone()
       if (markersMapViewData.places.length > 0) {
         let isRoute = markersMapViewData.hasRoutes() || this.mode === constants.modes.directions
-        let markers = []
-        if (this.mode === constants.modes.optimization) {
-          markers = GeoUtils.buildOptimizationMarkers(markersMapViewData.jobs, markersMapViewData.vehicles)
-        } else {
-          markers = GeoUtils.buildMarkers(markersMapViewData.places, isRoute, this.focusedPlace)
-        }
+        let markers = GeoUtils.buildMarkers(markersMapViewData.places, isRoute, this.focusedPlace)
         markers = this.$root.appHooks.run('markersCreated', markers)
         return markers
+      } else if (markersMapViewData.jobs.length || markersMapViewData.vehicles.length) {
+        return GeoUtils.buildOptimizationMarkers(markersMapViewData.jobs, markersMapViewData.vehicles)
       }
     },
     /**
@@ -712,7 +712,7 @@ export default {
       }, 500)
     },
     alternativeRouteColor(route) {
-      if(this.$store.getters.mode === constants.modes.optimization) {
+      if(this.mode === constants.modes.optimization) {
         return constants.vehicleColors[route.vehicle]
       }
       return constants.alternativeRouteColor
@@ -1173,6 +1173,18 @@ export default {
             polylineData = polylineData.concat(coords)
           }
         }
+        // for (const job of this.localMapViewData.jobs) {
+        //   if (job.coordinates.length) {
+        //     const coords = job.coordinates
+        //     polylineData = polylineData.concat([coords])
+        //   }
+        // }
+        // for (const vehicle of this.localMapViewData.vehicles) {
+        //   if (vehicle.coordinates.length) {
+        //     const coords = vehicle.coordinates
+        //     polylineData = polylineData.concat([coords])
+        //   }
+        // }
         // Add the polygons coordinates to the polyline that must
         // be considered to  the all features bounds
         for (const polygon of this.localMapViewData.polygons) {
@@ -1186,6 +1198,8 @@ export default {
         if (this.localMapViewData.hasPlaces() || polylineData.length > 0) {
           let places = Place.getFilledPlaces(this.localMapViewData.places)
           this.dataBounds = GeoUtils.getBounds(places, polylineData)
+        } else if (this.localMapViewData.jobs.length || this.localMapViewData.vehicles.length) {
+          this.dataBounds = GeoUtils.getBounds([], polylineData)
         } else {
           this.dataBounds = null
         }

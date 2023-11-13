@@ -89,6 +89,7 @@
       <template v-if="displayActiveRouteData">
         <ors-l-polyline :draggable="isPolylineDraggable"
           @rightClicked="mapRightClick"
+          :color="mode === 'optimization' ? constants.vehicleColors[activeRouteData.vehicle] : theme.primary"
           :focused-poly-index="highlightedRoutePointIndex"
           @addStopViaPolylineDrag="addStopViaPolylineDrag"
           :route="activeRouteData"

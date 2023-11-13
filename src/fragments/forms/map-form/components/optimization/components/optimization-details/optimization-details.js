@@ -80,17 +80,17 @@ export default {
       this.showError(this.$t('global.notImplemented'), {timeout: 3000})
     }
   },
-  // watch: {
-  //   /**
-  //    * Every time the response data changes
-  //    * the map builder is reset and the
-  //    * map data is reloaded
-  //    */
-  //   mapViewData: {
-  //     handler: function () {
-  //       this.localMapViewData = this.mapViewData.clone()
-  //     },
-  //     deep: true
-  //   },
-  // }
+  watch: {
+    /**
+     * Every time the response data changes
+     * the map builder is reset and the
+     * map data is reloaded
+     */
+    mapViewData: {
+      handler: function () {
+        this.localMapViewData = this.mapViewData.clone()
+      },
+      deep: true
+    },
+  }
 }

@@ -651,6 +651,9 @@ export default {
     },
     addJob(data) {
       EventBus.$emit('addJob', data)
+    },
+    addVehicle(data) {
+      EventBus.$emit('addVehicle', data)
     }
   },
 

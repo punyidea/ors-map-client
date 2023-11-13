@@ -89,15 +89,15 @@ class MapViewData {
 
     for (let i = 0; i < this.jobs.length; i++) {
       if (this.jobs[i] instanceof Job) {
-        const place = this.jobs[i]
-        mapViewDataClone.jobs.push(place.clone())
+        const job = this.jobs[i]
+        mapViewDataClone.jobs.push(job.clone())
       }
     }
 
     for (let i = 0; i < this.vehicles.length; i++) {
       if (this.vehicles[i] instanceof Vehicle) {
-        const place = this.vehicles[i]
-        mapViewDataClone.vehicles.push(place.clone())
+        const vehicle = this.vehicles[i]
+        mapViewDataClone.vehicles.push(vehicle.clone())
       }
     }
 

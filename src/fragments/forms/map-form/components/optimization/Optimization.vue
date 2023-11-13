@@ -7,10 +7,10 @@
           <br>
         </template>
         <div class="optimization-heading">
-          {{ $t('optimization.jobs') }}
+          {{ $t('optimization.jobs') }} (Max: 50)
           <v-tooltip bottom style="float: right">
             <template v-slot:activator="{ on }">
-              <v-btn class="no-padding" v-if="$mdAndUpResolution"
+              <v-btn class="no-padding"
                      icon small @click="manageJobs">
                 <v-icon :title="$t('optimization.manageJobs')" color="dark" :medium="$lowResolution">settings</v-icon>
               </v-btn>
@@ -21,10 +21,10 @@
       </template>
       <job-list :jobs="jobs"></job-list>
       <div class="optimization-heading">
-        {{ $t('optimization.vehicles') }}
+        {{ $t('optimization.vehicles') }} (Max: 3)
         <v-tooltip bottom style="float: right">
           <template v-slot:activator="{ on }">
-            <v-btn class="no-padding" v-if="$mdAndUpResolution"
+            <v-btn class="no-padding"
                    icon small @click="manageVehicles">
               <v-icon :title="$t('optimization.manageVehicles')" color="dark" :medium="$lowResolution">settings</v-icon>
             </v-btn>

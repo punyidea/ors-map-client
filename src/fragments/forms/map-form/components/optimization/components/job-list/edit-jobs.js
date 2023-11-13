@@ -79,8 +79,10 @@ export default {
         this.editJobs[i].setId(parseInt(i)+1)
       }
     },
-    addJob () {
-
+    addJob (fromMap) {
+      if(fromMap) {
+      //   choose point from map
+      }
     },
     saveJobs () {
       this.$emit('jobsChanged', this.editJobs)

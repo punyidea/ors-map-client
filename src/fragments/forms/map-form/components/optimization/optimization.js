@@ -15,7 +15,7 @@ import MapFormMixin from '../map-form-mixin'
 import OptimizationDetails from './components/optimization-details/OptimizationDetails'
 import JobList from './components/job-list/JobList.vue'
 import EditJobs from './components/job-list/EditJobs.vue'
-import EditVehicles from './components/vehicle-list/edit-vehicles'
+import EditVehicles from './components/vehicle-list/EditVehicles.vue'
 import Job from '@/models/job'
 import Vehicle from '@/models/vehicle'
 
@@ -25,15 +25,14 @@ export default {
     mode: constants.modes.optimization,
     mapViewData: new MapViewData(),
     jobs: [
-      // {'id':1,'service':300,'amount':[1],'location':[1.98465,48.70329],'skills':[1],'time_windows':[[32400,36000]]},
+      Job.fromJSON('{"id":1,"service":300,"amount":[1],"location":[8.68525,49.420822]}')
       // {'id':2,'service':300,'amount':[1],'location':[2.03655,48.61128],'skills':[1]},
       // {'id':3,'service':300,'amount':[1],'location':[2.39719,49.07611],'skills':[2]},
       // {'id':4,'service':300,'amount':[1],'location':[2.41808,49.22619],'skills':[2]},
       // {'id':5,'service':300,'amount':[1],'location':[2.28325,48.5958],'skills':[14]},
       // {'id':6,'service':300,'amount':[1],'location':[2.89357,48.90736],'skills':[14]}
     ],
-    vehicles: [Vehicle.fromJSON('{"id":1,"profile":"driving-car","start":[2.3414611816406254, 48.71401514864314],"end":[2.3414611816406254, 48.71401514864314],"capacity":[4],"time_window":[28800,43200]}'),
-      Vehicle.fromJSON('{"id":2,"profile":"driving-car","start":[2.3717594146728516, 48.710107345900575],"end":[2.3717594146728516, 48.710107345900575],"capacity":[4],"time_window":[28800,43200]}')],
+    vehicles: [Vehicle.fromJSON('{"id":1,"profile":"driving-car","start":[ 8.675863, 49.418477 ],"end":[ 8.675863, 49.418477 ],"capacity":[4]}')],
     // vehicles: [Vehicle.fromJSON('{"id":1,"profile":"driving-car","start":[2.3414611816406254, 48.71401514864314],"end":[2.3414611816406254, 48.71401514864314],"capacity":[4],"skills":[1,14],"time_window":[28800,43200]}'),
     //   Vehicle.fromJSON('{"id":2,"profile":"driving-car","start":[2.3717594146728516, 48.710107345900575],"end":[2.3717594146728516, 48.710107345900575],"capacity":[4],"skills":[2,14],"time_window":[28800,43200]}')],
     roundTripActive: false,
@@ -51,6 +50,20 @@ export default {
     EditVehicles,
   },
   computed: {
+    vehiclesJSON () {
+      const jsonVehicles = []
+      for (const v of this.vehicles) {
+        jsonVehicles.push(v.toJSON())
+      }
+      return jsonVehicles
+    },
+    jobsJSON () {
+      const jsonJobs = []
+      for (const job of this.jobs) {
+        jsonJobs.push(job.toJSON())
+      }
+      return jsonJobs
+    },
     disabledActions () {
       return appConfig.disabledActionsForOptimization
     }
@@ -120,12 +133,10 @@ export default {
       if (context.active) {
         if (marker.text.startsWith('V')) {
           let vehicle = context.vehicles[parseInt(marker.text.slice(1))-1]
-          console.log(vehicle)
           vehicle.setLngLat(marker.position.lng, marker.position.lat)
           context.optimizeJobs()
         } else {
           let job = context.jobs[parseInt(marker.text)-1]
-          console.log(job)
           job.setLngLat(marker.position.lng, marker.position.lat)
           context.optimizeJobs()
         }
@@ -165,7 +176,7 @@ export default {
     },
 
     addVehicle (data) {
-      const vehicle = Job.fromPlace(data.place)
+      const vehicle = Vehicle.fromPlace(data.place)
       vehicle.setId(this.vehicles.length + 1)
       const context = this
       vehicle.resolve().then(() => {
@@ -219,34 +230,38 @@ export default {
     optimizeJobs () {
       const context = this
       return new Promise((resolve) => {
-        if (context.jobs.length > 0) {
-          context.showInfo(context.$t('optimization.optimizeJobs'), { timeout: 0 })
-          EventBus.$emit('showLoading', true)
+        if (context.jobs.length) {
+          if (context.vehicles.length) {
+            context.showInfo(context.$t('optimization.optimizeJobs'), { timeout: 0 })
+            EventBus.$emit('showLoading', true)
 
-          // Calculate the route
-          Optimization(context.jobs, context.vehicles).then(data => {
-            data.options.translations = context.$t('global.units')
-            data.options.translations.polygon = this.$t('global.polygon')
+            // Calculate the optimized routes
+            Optimization(context.jobs, context.vehicles).then(data => {
+              data.options.translations = context.$t('global.units')
 
-            data = context.$root.appHooks.run('beforeBuildOptimizationMapViewData', data)
-            if (data) {
-              MapViewDataBuilder.buildMapData(data, context.$store.getters.appRouteData).then((mapViewData) => {
-                context.mapViewData = mapViewData
-                context.mapViewData.jobs = context.jobs
-                context.mapViewData.vehicles = context.vehicles
-                EventBus.$emit('mapViewDataChanged', mapViewData)
-                EventBus.$emit('newInfoAvailable')
-                context.showSuccess(context.$t('optimization.optimizationResultReady'))
-                context.setSidebarIsOpen()
-                resolve(mapViewData)
-              })
-            }
-          }).catch(result => {
-            context.handleOptimizeJobsError(result)
-          }).finally(() => {
-            EventBus.$emit('showLoading', false)
-          })
+              data = context.$root.appHooks.run('beforeBuildOptimizationMapViewData', data)
+              if (data) {
+                MapViewDataBuilder.buildMapData(data, context.$store.getters.appRouteData).then((mapViewData) => {
+                  context.mapViewData = mapViewData
+                  context.mapViewData.jobs = context.jobs
+                  context.mapViewData.vehicles = context.vehicles
+                  EventBus.$emit('mapViewDataChanged', mapViewData)
+                  EventBus.$emit('newInfoAvailable')
+                  context.showSuccess(context.$t('optimization.optimizationResultReady'))
+                  context.setSidebarIsOpen()
+                  resolve(mapViewData)
+                })
+              }
+            }).catch(result => {
+              context.handleOptimizeJobsError(result)
+            }).finally(() => {
+              EventBus.$emit('showLoading', false)
+            })
+          } else {
+            context.showError('No vehicles given. Please add a Vehicle to optimize')
+          }
         } else {
+          context.showError('No jobs given. Please add some Jobs to optimize')
           // There are no enough places or round trip to be routed
           resolve({})
         }
@@ -285,32 +300,36 @@ export default {
         // Empty the array and populate it with the
         // places from the appRoute without changing the
         // object reference because it is a prop
+        const defaultJobs = this.jobs
         this.jobs = this.$store.getters.appRouteData.jobs
         let places = this.$store.getters.appRouteData.places
         // TODO: load jobs
         let storedJobs = localStorage.getItem('jobs')
-        const jobs = []
-        if (storedJobs) {
-          for (const job of JSON.parse(storedJobs)) {
-            jobs.push(Job.fromJSON(job))
+        let storedVehicles = localStorage.getItem('vehicles')
+        if (storedVehicles) {
+          const vehicles = []
+          for (const v of JSON.parse(storedVehicles)) {
+            vehicles.push(Vehicle.fromJSON(v))
           }
-        } else if (places.length > 0) {
+          this.vehicles = vehicles
+        }
+        const jobs = []
+        if (places.length > 0) {
           for (const [i, place] of places.entries()) {
             const job = Job.fromPlace(place)
             job.setId(i + 1)
             jobs.push(job)
           }
+        } else if (storedJobs) {
+          for (const job of JSON.parse(storedJobs)) {
+            jobs.push(Job.fromJSON(job))
+          }
         }
         this.jobs = jobs
-        if (this.jobs) {
-          if (this.vehicles) {
-            this.optimizeJobs()
-          } else {
-            this.showError('No vehicles given.')
-          }
-        } else {
-          this.showError('No jobs given. Please add some Jobs to optimize.')
+        if (!this.jobs.length) {
+          this.jobs = defaultJobs
         }
+        this.optimizeJobs()
       }
     },
     jobsChanged(editedJobs) {
@@ -327,6 +346,7 @@ export default {
         newVehicles.push(vehicle.clone())
       }
       this.vehicles = newVehicles
+      this.optimizeJobs()
     },
     vehicleColors(vehicleId) {
       return constants.vehicleColors[vehicleId]

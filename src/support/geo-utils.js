@@ -9,6 +9,7 @@ import HtmlMarker from '@/fragments/html-marker/HtmlMarker'
 // Even if it is not accessed within this class, it is being used!
 import 'leaflet-geometryutil'
 import constants from '@/resources/constants'
+import theme from '@/config/theme'
 
 // noinspection GrazieInspection
 const geoUtils = {
@@ -215,7 +216,7 @@ const geoUtils = {
       color: color
     }
     if (isRoute && index !== null) {
-      propsData.markerNumber = Number(index) + 1
+      propsData.markerNumber = (Number(index) + 1).toString()
     }
     const htmlMarkerClass = Vue.extend(HtmlMarker)
     const htmlIconInstance = new htmlMarkerClass({
@@ -598,7 +599,7 @@ const geoUtils = {
       if (job.lng && job.lat) {
         // Build the marker
         let propsData = {
-          color: 'green',
+          color: theme.dark,
           markerNumber: job.id.toString()
         }
         const htmlMarkerClass = Vue.extend(HtmlMarker)
