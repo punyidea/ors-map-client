@@ -2,6 +2,7 @@ import Vue2LeafletMarkerCluster from 'vue2-leaflet-markercluster'
 import constants from '@/resources/constants'
 import {LMarker, LPopup } from 'vue2-leaflet'
 import appConfig from '@/config/app-config'
+import {EventBus} from '@/common/event-bus'
 
 import 'leaflet.markercluster/dist/MarkerCluster.css'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
@@ -76,6 +77,12 @@ export default {
       return isDraggable
     },
 
+    modeIsOptimization () {
+      if (this.mode === constants.modes.optimization) {
+        return true
+      }
+    },
+
     /**
      * Show the marker popup
      */
@@ -123,6 +130,13 @@ export default {
     },
     removePlace(index) {
       this.$emit('removePlace', index)
+    },
+    editPlace(index) {
+      if (this.markers[index].job) {
+        EventBus.$emit('editJob', this.markers[index].job.id)
+      } else if (this.markers[index].vehicle) {
+        this.$emit('showVehiclesModal', index)
+      }
     },
     markAsDirectFromHere (index) {
       this.$emit('markAsDirectFromHere', index)

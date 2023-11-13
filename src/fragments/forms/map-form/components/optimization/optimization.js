@@ -96,6 +96,11 @@ export default {
       context.addJob(data)
     })
 
+    // On popup edit click -> edit job
+    EventBus.$on('editJob', (index) => {
+      context.manageJobs(index)
+    })
+
     // On map right click -> addVehicle
     EventBus.$on('addVehicle', (data) => {
       context.addVehicle(data)

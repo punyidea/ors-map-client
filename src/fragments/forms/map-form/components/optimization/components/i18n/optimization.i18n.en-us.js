@@ -17,6 +17,7 @@ export default {
     manageVehicles: 'Manage vehicles',
     saveJobs: 'Save jobs',
     addJob: 'Add job',
-    removeJob: 'Remove job'
+    removeJob: 'Remove job',
+    editJob: 'Edit job'
   }
 }

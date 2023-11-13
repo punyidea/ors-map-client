@@ -27,10 +27,19 @@
         <l-popup v-if="showMarkerPopup">
           <div :ref="'markerPopupContainer' + index">
             {{marker.label}}
+            <div v-if="modeIsOptimization" style="width: 100%; height: auto" v-for="(j, i) in marker.job" :key="i">
+              <div v-if="['service', 'skill'].includes(i)">
+                <v-chip>{{i}}: {{marker.job[i]}}</v-chip>
+              </div>
+            </div>
             <div style="width:100%;height:1px"></div>
             <v-btn outline small fab v-if="markerIsRemovable" :title="$t('mapView.removePlace')"
               @click="removePlace(index)">
               <v-icon>delete</v-icon>
+            </v-btn>
+            <v-btn outline small fab v-if="modeIsOptimization" :title="$t('mapView.editDetails')"
+                   @click="editPlace(index)">
+              <v-icon>edit</v-icon>
             </v-btn>
             <v-btn outline small fab v-if="directIsAvailable(index)" :title="$t('mapView.toggleDirect')"
               @click="markAsDirectFromHere(index)">

@@ -17,7 +17,7 @@
         <v-card @click="editId = i+1" elevation="3" style="margin: 5px;cursor: pointer" v-for="(j, i) in editJobs" :key="i">
           <v-card-title style="padding-bottom: 0;">
             <div><b>Job {{ j.id }}</b></div>
-            <v-btn v-if="editId === j.id" class="edit-btn" flat small :style="{background: 'white'}" @click.stop="editId = 0" :title="$t('optimization.removeJob')">
+            <v-btn v-if="editId === j.id" class="edit-btn" flat small :style="{background: 'white'}" @click.stop="editId = 0" :title="$t('optimization.editJob')">
               <v-icon color="primary">edit</v-icon>
             </v-btn>
             <v-btn class="remove-btn" small icon :style="{background: 'white'}" @click.stop="removeJob(j.id)" :title="$t('optimization.removeJob')">
@@ -25,9 +25,8 @@
             </v-btn>
           </v-card-title>
           <v-card-text>
-            <div v-if="editId !== j.id">Location: {{ j }} - {{ j.placeName}}</div>
+            <div v-if="editId !== j.id">Location: {{ j }}</div>
             <div v-else>
-              <place-input ></place-input>
               <v-text-field v-model="editJobs[i].location" :persistent-hint="true" :hint="'Location'"></v-text-field>
               <v-text-field v-model="editJobs[i].service" :persistent-hint="true" :hint="'ServiceTime'"></v-text-field>
               <v-text-field v-model="editJobs[i].amount" :persistent-hint="true" :hint="'Amount'"></v-text-field>
