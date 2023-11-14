@@ -10,6 +10,7 @@ class Job extends Place {
     this.service = options.service || 0 // time spent at job
     this.skills = options.skills || []
     this.priority = options.priority || 0
+    this.delivery = options.delivery || [1]
     this.time_windows = options.time_windows || []
   }
 
@@ -51,7 +52,7 @@ class Job extends Place {
       'id': this.id,
       'location': this.location,
       'service': this.service,
-      'amount': this.amount
+      'delivery': this.delivery
     }
 
     if (this.skills.length) {

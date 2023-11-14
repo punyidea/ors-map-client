@@ -81,8 +81,12 @@ export default {
     },
     addJob (fromMap) {
       if(fromMap) {
-      //   choose point from map
+      // TODO: choose point from map
+        this.showError(this.$t('global.notImplemented'), {timeout: 3000})
       }
+    },
+    copyJob () {
+      this.showError(this.$t('global.notImplemented'), {timeout: 3000})
     },
     saveJobs () {
       this.$emit('jobsChanged', this.editJobs)

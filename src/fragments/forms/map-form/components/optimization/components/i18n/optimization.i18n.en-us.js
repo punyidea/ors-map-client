@@ -25,6 +25,7 @@ export default {
     saveVehicles: 'Save vehicles',
     addVehicle: 'Add vehicle',
     removeVehicle: 'Remove vehicle',
-    editVehicle: 'Edit vehicle'
+    editVehicle: 'Edit vehicle',
+    copyJob: 'Copy job'
   }
 }

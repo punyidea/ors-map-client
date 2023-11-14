@@ -1,5 +1,4 @@
 import MapViewData from '@/models/map-view-data'
-import Place from '@/models/place'
 import Utils from '@/support/utils'
 import GeoUtils from '@/support/geo-utils'
 
@@ -21,7 +20,6 @@ class OptimizationBuilder {
     const mapViewData = new MapViewData()
     const context = this
     return new Promise((resolve) => {
-      // mapViewData.places = context.buildPlaces()
       mapViewData.rawData = Utils.clone(context.responseData)
       mapViewData.routes = context.buildRoutes()
       mapViewData.isRouteData = mapViewData.hasRoutes()
@@ -40,21 +38,6 @@ class OptimizationBuilder {
       }
     }
     return this.responseData.routes
-  }
-
-  /**
-   * Get the places data based in the response data
-   * @returns {Array} markersData
-   */
-  buildPlaces = () => {
-    const places = []
-    for (const route of this.responseData.routes) {
-      for (const step of route.steps) {
-        const place = new Place(step.location[0], step.location[1])
-        places.push(place)
-      }
-    }
-    return places
   }
 
   /**

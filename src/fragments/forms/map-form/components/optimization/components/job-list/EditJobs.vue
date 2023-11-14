@@ -32,7 +32,11 @@
           </v-card-title>
           <v-card-text>
             <div v-if="editId !== j.id">
-              <v-chip></v-chip>
+              <div style="width: 100%; height: auto" v-for="(v, k) in j" :key="k">
+                <div v-if="['service', 'skill','amount'].includes(k)">
+                  <v-chip v-if="v && v.length">{{k}}: {{v}}</v-chip>
+                </div>
+              </div>
             </div>
             <div v-else>
               <v-text-field v-model="editJobs[i].location" :persistent-hint="true" :hint="'Location'"></v-text-field>

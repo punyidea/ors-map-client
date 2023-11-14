@@ -247,7 +247,7 @@ export default {
                   context.mapViewData.vehicles = context.vehicles
                   EventBus.$emit('mapViewDataChanged', mapViewData)
                   EventBus.$emit('newInfoAvailable')
-                  context.showSuccess(context.$t('optimization.optimizationResultReady'))
+                  context.showSuccess(context.$t('optimization.optimizationResultReady'), { timeout: 2000 })
                   context.setSidebarIsOpen()
                   resolve(mapViewData)
                 })

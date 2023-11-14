@@ -9,7 +9,7 @@
               {{marker.label}}
               <div style="width:100%;height:1px"></div>
               <v-btn outline small fab v-if="markerIsRemovable" :title="$t('mapView.removePlace')"
-                @click="removePlace(index)">
+                @click="removePlace(marker, index)">
                 <v-icon>delete</v-icon>
               </v-btn>
               <v-btn outline small fab v-if="directIsAvailable(index)" :title="$t('mapView.toggleDirect')"
@@ -27,11 +27,18 @@
         <l-popup v-if="showMarkerPopup">
           <div :ref="'markerPopupContainer' + index">
             {{marker.label}}
-            <div v-if="modeIsOptimization" style="width: 100%; height: auto" v-for="(j, i) in marker.job" :key="i">
-              <div v-if="['service', 'skill'].includes(i)">
-                <v-chip>{{i}}: {{marker.job[i]}}</v-chip>
+            <template v-if="modeIsOptimization">
+              <div style="width: 100%; height: auto" v-for="(j, i) in marker.job" :key="i">
+                <div v-if="['service', 'skill','amount'].includes(i)">
+                  <v-chip v-if="j && j.length">{{i}}: {{j}}</v-chip>
+                </div>
               </div>
-            </div>
+              <div style="width: 100%; height: auto" v-for="(j, i) in marker.vehicle" :key="i">
+                <div v-if="['profile', 'amount', 'capacity', 'description'].includes(i)">
+                  <v-chip v-if="j && j.length">{{i}}: {{j}}</v-chip>
+                </div>
+              </div>
+            </template>
             <div style="width:100%;height:1px"></div>
             <v-btn outline small fab v-if="markerIsRemovable" :title="$t('mapView.removePlace')"
               @click="removePlace(index)">

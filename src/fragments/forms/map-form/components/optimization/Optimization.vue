@@ -36,7 +36,7 @@
         <v-card-title style="padding-bottom: 0;"><v-icon :color="vehicleColors(v.id)" style="padding: 0 5px 0 0">local_shipping</v-icon><b>Vehicle {{v.id}} ({{v.profile}})</b></v-card-title>
         <v-card-text>
           <template v-for="prop in ['capacity','skills','time_window']">
-            <div v-if="v[prop]" style="flex: auto">{{ $t(`optimization.${prop}`) }}: {{ v[prop] }}</div>
+            <v-chip v-if="v[prop]" style="flex: auto">{{ $t(`optimization.${prop}`) }}: {{ v[prop] }}</v-chip>
           </template>
         </v-card-text>
       </v-card>

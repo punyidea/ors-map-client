@@ -6,6 +6,10 @@
       <print :map-view-data="localMapViewData"></print>
       <h3>{{$t('optimizationDetails.optimizationDetails')}}</h3>
     </div>
+    <div  style="padding:0 0 0 10px" v-if="mapViewData.rawData.summary.unassigned">
+      <h4>{{$t('optimizationDetails.warningUnassigned')}}</h4>
+      <v-alert :key="job.id" v-for="job in mapViewData.rawData.unassigned" :value="job.id"  type="warning" style="color:black" >Job {{job.id}} {{$t('optimizationDetails.isUnassigned')}}</v-alert>
+    </div>
     <v-expansion-panel slot="content" class="no-shadow" v-if="hasRoutes" :value="panelExtended" :expand="true">
       <v-expansion-panel-content style="background: transparent;" class="routes-header" :key="routeIndex" v-for="(route, routeIndex) in parsedRoutes">
         <div slot="header">
@@ -15,19 +19,15 @@
             </v-btn>
           </h4>
         </div>
-        <div style="padding:0 0 0 10px; display: flex; flex-wrap:wrap; flex-grow: initial">
+        <div style="padding:0 0 0 10px; display: flex; flex-wrap:wrap;">
           <template v-for="prop in ['distance','duration','service','delivery','pickup','waiting_time']">
-            <div v-if="route[prop]" style="flex: auto">{{ $t(`optimizationDetails.${prop}`) }}: {{ route[prop] }}</div>
+            <v-chip v-if="route[prop]" style="flex: 0 1 auto">{{ $t(`optimizationDetails.${prop}`) }}: {{ route[prop] }}</v-chip>
           </template>
         </div>
 
         <v-list>
           <v-divider></v-divider>
           <v-list dense class="route-details">
-            <div  style="padding:0 0 0 10px" v-if="route.violations">
-              <h4 >{{$t('routeDetails.warnings')}}:</h4>
-              <v-alert :key="warning.code" v-for="warning in route.violations" :value="getWarningTranslated(warning)"  type="warning" style="color:black" >{{ getWarningTranslated(warning) }}</v-alert>
-            </div>
             <div v-if="route.steps > 1" class="route-container">
               <v-expansion-panel class="no-shadow" v-if="hasRoutes" :value="route.steps.length === 1 ? 0 : null">
                 <v-expansion-panel-content class="route-panel">
