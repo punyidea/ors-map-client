@@ -1114,7 +1114,7 @@ export default {
      *
      */
     loadMapData () {
-      if (this.localMapViewData.hasPlaces()) {
+      if (this.localMapViewData.hasPlaces() || this.localMapViewData.jobs.length || this.localMapViewData.vehicles.length) {
         this.defineActiveRouteIndex()
         this.updateMarkersLabel()
         if (this.hasOnlyOneMarker && this.fitBounds) {
