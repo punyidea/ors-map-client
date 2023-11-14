@@ -33,9 +33,9 @@
                   <v-chip v-if="j && j.length">{{i}}: {{j}}</v-chip>
                 </div>
               </div>
-              <div style="width: 100%; height: auto" v-for="(j, i) in marker.vehicle" :key="i">
+              <div style="width: 100%; height: auto" v-for="(v, i) in marker.vehicle" :key="i">
                 <div v-if="['profile', 'amount', 'capacity', 'description'].includes(i)">
-                  <v-chip v-if="j && j.length">{{i}}: {{j}}</v-chip>
+                  <v-chip v-if="v && v.length">{{i}}: {{v}}</v-chip>
                 </div>
               </div>
             </template>
