@@ -9,6 +9,7 @@ export default {
     genericErrorMsg: 'It was not possible to optimize Jobs',
     capacity: 'Capacity',
     skills: 'Skills',
+    manageSkills: 'Manage Skills',
     time_window: 'Time window',
     jobs: 'Jobs',
     manageJobs: 'Manage jobs',

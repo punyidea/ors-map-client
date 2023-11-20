@@ -1,6 +1,7 @@
 import RouteImporter from '@/fragments/forms/route-importer/RouteImporter.vue'
 import MapFormBtn from '@/fragments/forms/map-form-btn/MapFormBtn.vue'
 import PlaceInput from '@/fragments/forms/place-input/PlaceInput.vue'
+import SkillList from './SkillList.vue'
 import {EventBus} from '@/common/event-bus'
 import Job from '@/models/job'
 
@@ -15,6 +16,10 @@ export default {
       Type: Array[Job],
       Required: true
     },
+    skills: {
+      Type: Array[Skill],
+      Required: false
+    },
     // Amount of place inputs
     disabledActions: {
       default: () => [],
@@ -25,7 +30,8 @@ export default {
     RouteImporter,
     MapFormBtn,
     PlaceInput,
-    EventBus
+    EventBus,
+    SkillList
   },
   computed: {
     jobsJSON () {

@@ -41,7 +41,7 @@
             <div v-else>
               <v-text-field v-model="editJobs[i].location" :persistent-hint="true" :hint="'Location'"></v-text-field>
               <v-text-field v-model.number="editJobs[i].service[0]" :persistent-hint="true" :hint="'ServiceTime'"></v-text-field>
-              <v-text-field v-model.number="editJobs[i].skills[0]" :persistent-hint="true" :hint="'Skills needed for this Job'"></v-text-field>
+              <v-select v-model.number="editJobs[i].skills[0]" :items="skills" :persistent-hint="true" :hint="'Skills needed for this Job'"></v-select>
             </div>
           </v-card-text>
         </v-card>
