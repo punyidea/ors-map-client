@@ -18,10 +18,10 @@ export default {
     }
   },
   components: {
-    OptimizationSteps,
-    Share,
     Download,
-    Print
+    Share,
+    Print,
+    OptimizationSteps,
   },
   computed: {
     hasRoutes () {
@@ -57,10 +57,21 @@ export default {
   created() {
     this.localMapViewData = this.mapViewData.clone()
   },
-  methods: {
+  watch: {
     /**
-     * get the parsed segments by
-     * humanizing the duration and distances
+     * Every time the response data changes
+     * the map builder is reset and the
+     * map data is reloaded
+     */
+    mapViewData: {
+      handler: function () {
+        this.localMapViewData = this.mapViewData.clone()
+      },
+      deep: true
+    },
+  },
+  methods: {
+    /** get the parsed segments by humanizing the duration and distances
      * @param {*} steps
      * @returns {Object} segments
      */
@@ -79,18 +90,5 @@ export default {
       console.log(routeId)
       this.showError(this.$t('global.notImplemented'), {timeout: 3000})
     }
-  },
-  watch: {
-    /**
-     * Every time the response data changes
-     * the map builder is reset and the
-     * map data is reloaded
-     */
-    mapViewData: {
-      handler: function () {
-        this.localMapViewData = this.mapViewData.clone()
-      },
-      deep: true
-    },
   }
 }

@@ -11,21 +11,21 @@ export default {
     skills: 'Skills',
     time_window: 'Time window',
     jobs: 'Jobs',
-    vehicles: 'Vehicles',
     manageJobs: 'Manage jobs',
     importJobFile: 'Import jobs',
     exportJobFile: 'Export jobs',
-    manageVehicles: 'Manage vehicles',
-    importVehicleFile: 'Import vehicles',
-    exportVehicleFile: 'Export vehicles',
     saveJobs: 'Save jobs',
     addJob: 'Add job',
     removeJob: 'Remove job',
     editJob: 'Edit job',
+    copyJob: 'Copy job',
+    vehicles: 'Vehicles',
+    manageVehicles: 'Manage vehicles',
+    importVehicleFile: 'Import vehicles',
+    exportVehicleFile: 'Export vehicles',
     saveVehicles: 'Save vehicles',
     addVehicle: 'Add vehicle',
     removeVehicle: 'Remove vehicle',
-    editVehicle: 'Edit vehicle',
-    copyJob: 'Copy job'
+    editVehicle: 'Edit vehicle'
   }
 }

@@ -1,23 +1,23 @@
-import FormActions from '@/fragments/forms/map-form/components/form-actions/FormActions'
+import MapFormMixin from '../map-form-mixin'
 import MapViewDataBuilder from '@/support/map-data-services/map-view-data-builder'
 import FieldsContainer from '@/fragments/forms/fields-container/FieldsContainer'
 import OrsFilterUtil from '@/support/map-data-services/ors-filter-util'
+import FormActions from '@/fragments/forms/map-form/components/form-actions/FormActions'
 import PlaceInput from '@/fragments/forms/place-input/PlaceInput.vue'
+import {EventBus} from '@/common/event-bus'
 import { Optimization } from '@/support/ors-api-runner'
 import AppMode from '@/support/app-modes/app-mode'
 import MapViewData from '@/models/map-view-data'
 import constants from '@/resources/constants'
 import appConfig from '@/config/app-config'
-import {EventBus} from '@/common/event-bus'
+import Job from '@/models/job'
+import Vehicle from '@/models/vehicle'
 
 // Local components
-import MapFormMixin from '../map-form-mixin'
 import OptimizationDetails from './components/optimization-details/OptimizationDetails'
 import JobList from './components/job-list/JobList.vue'
 import EditJobs from './components/job-list/EditJobs.vue'
 import EditVehicles from './components/vehicle-list/EditVehicles.vue'
-import Job from '@/models/job'
-import Vehicle from '@/models/vehicle'
 
 export default {
   mixins: [MapFormMixin],
@@ -41,28 +41,28 @@ export default {
     showVehicleManagement: false
   }),
   components: {
-    PlaceInput,
     FieldsContainer,
     FormActions,
+    PlaceInput,
     OptimizationDetails,
     JobList,
     EditJobs,
     EditVehicles,
   },
   computed: {
-    vehiclesJSON () {
-      const jsonVehicles = []
-      for (const v of this.vehicles) {
-        jsonVehicles.push(v.toJSON())
-      }
-      return jsonVehicles
-    },
     jobsJSON () {
       const jsonJobs = []
       for (const job of this.jobs) {
         jsonJobs.push(job.toJSON())
       }
       return jsonJobs
+    },
+    vehiclesJSON () {
+      const jsonVehicles = []
+      for (const v of this.vehicles) {
+        jsonVehicles.push(v.toJSON())
+      }
+      return jsonVehicles
     },
     disabledActions () {
       return appConfig.disabledActionsForOptimization

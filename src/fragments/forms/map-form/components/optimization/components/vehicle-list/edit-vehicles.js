@@ -1,7 +1,7 @@
-import {EventBus} from '@/common/event-bus'
 import RouteImporter from '@/fragments/forms/route-importer/RouteImporter.vue'
 import MapFormBtn from '@/fragments/forms/map-form-btn/MapFormBtn.vue'
 import PlaceInput from '@/fragments/forms/place-input/PlaceInput.vue'
+import {EventBus} from '@/common/event-bus'
 import Vehicle from '@/models/vehicle'
 
 export default {
@@ -22,9 +22,9 @@ export default {
     }
   },
   components: {
-    PlaceInput,
-    MapFormBtn,
     RouteImporter,
+    MapFormBtn,
+    PlaceInput,
     EventBus
   },
   computed: {
@@ -49,19 +49,20 @@ export default {
     })
   },
   methods: {
-    closeVehiclesModal () {
-      this.isVehiclesOpen = false
-      this.$emit('close')
-    },
-
     isEnabled (action) {
       const disabled = this.disabledActions
       return !disabled.includes(action)
     },
 
+    closeVehiclesModal () {
+      this.isVehiclesOpen = false
+      this.$emit('close')
+    },
+
     contentUploaded (data) {
       this.$emit('contentUploaded', data)
     },
+
     importVehicles () {
       // TODO: Import from JSON
       this.showError(this.$t('global.notImplemented'), {timeout: 3000})
@@ -73,18 +74,21 @@ export default {
         this.showError(this.$t('vehicle.copiedToClipboardFailed'), {timeout: 3000})
       },)
     },
+    saveVehicles () {
+      this.$emit('vehiclesChanged', this.editVehicles)
+      this.closeVehiclesModal()
+    },
+    addVehicle () {
+    // TODO: add vehicles
+    },
     removeVehicle (id) {
       this.editVehicles.splice(id-1,1)
       for (const i in this.editVehicles) {
         this.editVehicles[i].setId(parseInt(i)+1)
       }
     },
-    addVehicle () {
-
-    },
-    saveVehicles () {
-      this.$emit('vehiclesChanged', this.editVehicles)
-      this.closeVehiclesModal()
+    copyVehicle () {
+      // TODO: add copyVehicle
     },
     restoreVehicles () {
       this.editVehicles = this.vehicles
