@@ -41,13 +41,8 @@
             <div v-else>
               <v-text-field v-model="editJobs[i].location" :persistent-hint="true" :hint="'Location'"></v-text-field>
               <v-text-field v-model.number="editJobs[i].service[0]" :persistent-hint="true" :hint="'ServiceTime'"></v-text-field>
-<!--              <v-text-field v-model.number="editJobs[i].amount[0]" :persistent-hint="true" :hint="'Amount'"></v-text-field>-->
               <v-text-field v-model.number="editJobs[i].skills[0]" :persistent-hint="true" :hint="'Skills needed for this Job'"></v-text-field>
             </div>
-            <!--        <div>Location: {{ j.location }}</div>
-                    <template v-for="prop in ['service','amount','skills','time_window']">
-                      <div v-if="v[prop]" style="flex: auto">{{ $t(`optimization.${prop}`) }}: {{ j[prop] }}</div>
-                    </template>-->
           </v-card-text>
         </v-card>
         <v-layout row :wrap="$lowResolution">
