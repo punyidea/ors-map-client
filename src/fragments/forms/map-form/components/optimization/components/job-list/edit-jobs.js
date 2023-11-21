@@ -9,16 +9,18 @@ export default {
   data: () => ({
     isJobsOpen: true,
     editId: 0,
-    editJobs: []
+    editJobs: [],
+    skills: [{
+      name: 'length > 1.5m',
+      id: 0
+    }
+    ],
+    showSkillManagement: false
   }),
   props: {
     jobs: {
       Type: Array[Job],
       Required: true
-    },
-    skills: {
-      Type: Array[Skill],
-      Required: false
     },
     // Amount of place inputs
     disabledActions: {
@@ -101,6 +103,11 @@ export default {
     },
     restoreJobs () {
       this.editJobs = this.jobs
-    }
+    },
+
+    manageSkills() {
+      this.showSkillManagement = true
+      EventBus.$emit('showSkillsModal')
+    },
   }
 }

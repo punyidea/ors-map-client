@@ -1,22 +1,29 @@
 <template>
   <div>
-    <v-dialog v-model="isSkillsOpen" max-width="400" :persistent="true" attach="body">
+    <v-dialog v-model="isSkillsOpen" max-width="500" :persistent="true" attach="body">
       <box background="white" class="skills-modal" closable @closed="closeSkillsModal()">
         <h3 slot="header" style="padding-right: 55px">
           {{ $t('optimization.manageSkills') }}
-<!--          <v-btn class="edit-jobs-btn" flat :style="{background: 'white'}" @click="exportJobs()" :title="$t('optimization.exportJobFile')">
-            <v-icon color="primary">cloud_download</v-icon>
-          </v-btn>
-          <v-btn class="edit-jobs-btn" flat :style="{background: 'white'}" @click="importJobs()" :title="$t('optimization.importJobFile')">
-            <v-icon color="primary">cloud_upload</v-icon>
-          </v-btn>
-          <v-btn class="edit-jobs-btn" flat :style="{background: 'white'}" @click="saveJobs()" :title="$t('optimization.saveJobs')">
+          <v-btn class="edit-skills-btn" flat :style="{background: 'white'}" @click="saveSkills()" :title="$t('optimization.saveSkills')">
             <v-icon color="success">save</v-icon>
           </v-btn>
-          <v-btn class="edit-jobs-btn" flat :style="{}" @click="addJob(true)" :title="$t('optimization.addJob')">
+          <v-btn class="edit-skills-btn" flat :style="{}" @click="addSkill(true)" :title="$t('optimization.addJob')">
             <v-icon color="info">add</v-icon>
-          </v-btn>-->
+          </v-btn>
         </h3>
+        <v-card @click="editId = i+1" elevation="3" style="margin: 5px;cursor: pointer" v-for="(skill, i) in skills" :key="i">
+          <v-card-title style="padding-bottom: 0;">
+            <div><b>Skill {{ skill.id }}</b></div>
+            <v-btn v-if="editId === skill.id" class="edit-btn" flat small :style="{background: 'white'}" @click.stop="editId = 0" :title="$t('optimization.editSkill')">
+              <v-icon color="primary">edit</v-icon>
+            </v-btn>
+            <v-btn class="remove-btn" small icon :style="{background: 'white'}" @click.stop="removeSkill(skill.id)" :title="$t('optimization.removeSkill')">
+              <v-icon color="primary">delete</v-icon>
+            </v-btn>
+          </v-card-title>
+          <div>Skill:{{ skill.name }}</div>
+            <v-text-field v-model="skill.name" :persistent-hint="true" :hint="'Skill name'"></v-text-field>
+        </v-card>
         <v-layout row :wrap="$lowResolution">
           <v-spacer class="hidden-md-and-down"></v-spacer>
           <v-flex text-xs-right xs12 sm5 md7 :class="{'ml-2': $vuetify.breakpoint.smAndDown, 'mb-2': $lowResolution}">
@@ -37,5 +44,5 @@
   </div>
 </template>
 
-<script src="skill-list.js"></script>
-<style scoped src="skill-list.css"></style>
+<script src="./edit-skills.js"></script>
+<style scoped src="./edit-skills.css"></style>
