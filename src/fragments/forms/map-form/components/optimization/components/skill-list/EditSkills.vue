@@ -37,5 +37,5 @@
   </div>
 </template>
 
-<script src="./skill-list.js"></script>
-<style scoped src="./skill-list.css"></style>
+<script src="skill-list.js"></script>
+<style scoped src="skill-list.css"></style>

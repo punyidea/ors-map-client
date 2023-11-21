@@ -12,5 +12,6 @@
       </v-expansion-panel>
   </div>
 </template>
+
 <script src="./job-list.js"></script>
 <style scoped src="./job-list.css"></style>

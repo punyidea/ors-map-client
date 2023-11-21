@@ -1,7 +1,7 @@
 import RouteImporter from '@/fragments/forms/route-importer/RouteImporter.vue'
 import MapFormBtn from '@/fragments/forms/map-form-btn/MapFormBtn.vue'
 import PlaceInput from '@/fragments/forms/place-input/PlaceInput.vue'
-import SkillList from './SkillList.vue'
+import EditSkills from '@/fragments/forms/map-form/components/optimization/components/skill-list/EditSkills.vue'
 import {EventBus} from '@/common/event-bus'
 import Job from '@/models/job'
 
@@ -30,8 +30,8 @@ export default {
     RouteImporter,
     MapFormBtn,
     PlaceInput,
-    EventBus,
-    SkillList
+    EditSkills,
+    EventBus
   },
   computed: {
     jobsJSON () {

@@ -58,7 +58,6 @@
     </v-expansion-panel>
   </box>
 </template>
-<script src="./optimization-details.js">
 
-</script>
+<script src="./optimization-details.js"></script>
 <style scoped src="./optimization-details.css"></style>

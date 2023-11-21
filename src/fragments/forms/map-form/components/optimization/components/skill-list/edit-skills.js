@@ -1,4 +1,4 @@
-import Job from "@/models/job";
+import Skill from '@/models/skill'
 
 export default {
   data: () => ({

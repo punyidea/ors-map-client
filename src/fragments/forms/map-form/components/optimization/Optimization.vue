@@ -53,7 +53,6 @@
     <edit-vehicles v-if="showVehicleManagement" :vehicles="vehicles" @vehiclesChanged="vehiclesChanged" @close="showVehicleManagement=false"></edit-vehicles>
   </div>
 </template>
-<script src="./optimization.js">
-</script>
-<style scoped src="./optimization.css">
-</style>
+
+<script src="./optimization.js"></script>
+<style scoped src="./optimization.css"></style>
