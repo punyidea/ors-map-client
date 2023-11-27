@@ -13,7 +13,7 @@
         </h3>
         <v-card @click="editId = i+1" elevation="3" style="margin: 5px;cursor: pointer" v-for="(skill, i) in skills" :key="i">
           <v-card-title style="padding-bottom: 0;">
-            <div><b>Skill {{ skill.id }}</b></div>
+            <div><b>Skill: {{ skill.name }}</b></div>
             <v-btn v-if="editId === skill.id" class="edit-btn" flat small :style="{background: 'white'}" @click.stop="editId = 0" :title="$t('optimization.editSkill')">
               <v-icon color="primary">edit</v-icon>
             </v-btn>
@@ -21,7 +21,6 @@
               <v-icon color="primary">delete</v-icon>
             </v-btn>
           </v-card-title>
-          <div>Skill:{{ skill.name }}</div>
             <v-text-field v-model="skill.name" :persistent-hint="true" :hint="'Skill name'"></v-text-field>
         </v-card>
         <v-layout row :wrap="$lowResolution">
@@ -32,7 +31,7 @@
           </v-flex>
           <v-flex text-xs-right xs12 sm3 md3 :class="{'ml-2': $vuetify.breakpoint.smAndDown}">
             <v-btn :block="$lowResolution" color="info" :title="$t('optimization.addJob')" @click="addSkill(true)">
-              {{$t('optimization.addJob')}}</v-btn>
+              {{$t('optimization.addSkill')}}</v-btn>
           </v-flex>
           <v-flex text-xs-right xs12 sm3 md3 :class="{'ml-2': $vuetify.breakpoint.smAndDown}">
             <v-btn :block="$lowResolution" color="success" :title="$t('global.save')" @click="saveSkills">

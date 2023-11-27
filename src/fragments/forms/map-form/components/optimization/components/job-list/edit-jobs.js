@@ -67,6 +67,12 @@ export default {
       this.$emit('close')
     },
 
+    itemTitle (item) {
+      return {
+        title: item.name,
+      }
+    },
+
     contentUploaded (data) {
       this.$emit('contentUploaded', data)
     },
