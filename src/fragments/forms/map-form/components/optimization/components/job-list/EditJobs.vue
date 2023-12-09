@@ -41,16 +41,15 @@
             <div v-else>
               <v-text-field v-model="editJobs[i].location" :persistent-hint="true" :hint="'Location'"></v-text-field>
               <v-text-field v-model.number="editJobs[i].service[0]" :persistent-hint="true" :hint="'Service time (in seconds)'"></v-text-field>
-              <v-select :items="skills" :title="itemTitle" :persistent-hint="true" :hint="'Skills needed for this Job'"></v-select>
-              <v-tooltip bottom style="float: right">
-                <template v-slot:activator="{ on }">
-                  <v-btn class="no-padding"
-                         icon small @click="manageSkills">
+              <v-select v-model="selectedSkills" :items="jobSkills" item-text="name" item-value="id" :persistent-hint="true" :hint="'Skills needed for this Job'" multiple>
+                <template v-slot:append-item>
+                  <v-divider class="mt-2"></v-divider>
+                  <v-btn @click="manageSkills">
                     <v-icon :title="$t('optimization.manageSkills')" color="dark" :medium="$lowResolution">settings</v-icon>
+                    {{ 'manage Skills' }}
                   </v-btn>
                 </template>
-                {{ $t('optimization.manageSkills') }}
-              </v-tooltip>
+              </v-select>
             </div>
           </v-card-text>
         </v-card>

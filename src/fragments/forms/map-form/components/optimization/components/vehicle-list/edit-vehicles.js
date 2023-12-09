@@ -3,12 +3,24 @@ import MapFormBtn from '@/fragments/forms/map-form-btn/MapFormBtn.vue'
 import PlaceInput from '@/fragments/forms/place-input/PlaceInput.vue'
 import {EventBus} from '@/common/event-bus'
 import Vehicle from '@/models/vehicle'
+import Skill from '@/models/skill'
 
 export default {
   data: () => ({
     isVehiclesOpen: true,
     editId: 0,
-    editVehicles: []
+    editVehicles: [],
+    vehicleSkills: [
+      {
+        name: 'length > 1.5m',
+        id: 1
+      },
+      {
+        name: 'example 2',
+        id: 2
+      }],
+    selectedSkills: [],
+    showSkillManagement: false
   }),
   props: {
     vehicles: {
@@ -37,11 +49,13 @@ export default {
     }
   },
   created () {
+    this.loadSkills()
+
     for (const v of this.vehicles) {
       this.editVehicles.push(v.clone())
     }
-    const context = this
 
+    const context = this
     // edit Vehicles box is open
     EventBus.$on('showVehiclesModal', (editId) => {
       context.isVehiclesOpen = true
@@ -92,6 +106,22 @@ export default {
     },
     restoreVehicles () {
       this.editVehicles = this.vehicles
-    }
+    },
+
+    loadSkills() {
+      // this.vehicleSkills = this.$store.getters.appRouteData.skills
+      let storedSkills = localStorage.getItem('skills')
+      if (storedSkills) {
+        const skills = []
+        for (const skill of JSON.parse(storedSkills)) {
+          skills.push(Skill.fromJSON(skill))
+        }
+        this.vehicleSkills = skills
+      }
+    },
+    manageSkills(skillId) {
+      this.showSkillManagement = true
+      EventBus.$emit('showSkillsModal', skillId)
+    },
   }
 }

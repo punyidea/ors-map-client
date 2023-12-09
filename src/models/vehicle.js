@@ -67,7 +67,11 @@ class Vehicle extends Place {
     }
 
     if (this.skills.length) {
-      out.skills = this.skills
+      let skillIds = []
+      for (const skill in this.skills) {
+        skillIds.push(skill.id)
+      }
+      out.skills = skillIds
     }
     if (this.time_window.length) {
       out.time_window = this.time_window

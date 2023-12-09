@@ -1,11 +1,43 @@
+import {EventBus} from '@/common/event-bus'
 import Skill from '@/models/skill'
 
 export default {
   data: () => ({
     isSkillsOpen: true,
     editId: 0,
-    skills: [new Skill()]
+    editSkills: [],
+    selectedSkills: []
   }),
+  props: {
+    skills: {
+      Type: Array[Skill],
+      Required: true
+    },
+  },
+  components: {
+    EventBus
+  },
+  computed: {
+    skillsJSON () {
+      const jsonSkills = []
+      for (const skill of this.skills) {
+        jsonSkills.push(skill.toJSON())
+      }
+      return jsonSkills
+    }
+  },
+  created() {
+    for (const skill of this.skills) {
+      this.editSkills.push(skill.clone())
+    }
+
+    const context = this
+    // edit Skills box is open
+    EventBus.$on('showSkillsModal', (editId) => {
+      context.isSkillsOpen = true
+      context.editId = editId
+    })
+  },
   methods: {
     closeSkillsModal() {
       this.isSkillsOpen = false
@@ -13,7 +45,7 @@ export default {
     },
 
     saveSkills () {
-      this.$emit('skillsChanged', this.skills)
+      this.$emit('skillsChanged', this.editSkills)
       this.closeSkillsModal()
     },
     addSkill () {
@@ -21,9 +53,9 @@ export default {
       this.showError(this.$t('global.notImplemented'), {timeout: 3000})
     },
     removeSkill (id) {
-      this.skills.splice(id-1,1)
-      for (const i in this.skills) {
-        this.skills[i].setId(parseInt(i)+1)
+      this.editSkills.splice(id-1,1)
+      for (const i in this.editSkills) {
+        this.editSkills[i].setId(parseInt(i)+1)
       }
     },
   }

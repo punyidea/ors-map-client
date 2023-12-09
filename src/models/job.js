@@ -56,7 +56,11 @@ class Job extends Place {
     }
 
     if (this.skills.length) {
-      out['skills'] = this.skills
+      let skillIds = []
+      for (const skill in this.skills) {
+        skillIds.push(skill.id)
+      }
+      out['skills'] = skillIds
     }
     if (this.time_windows.length) {
       out['time_windows'] = this.time_windows

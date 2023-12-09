@@ -29,7 +29,15 @@
             <div v-else>
               <v-text-field v-model="editVehicles[i].start" :persistent-hint="true" :hint="'Start & End'"></v-text-field>
               <v-text-field v-model.number="editVehicles[i].capacity[0]" :persistent-hint="true" :hint="'Capacity'"></v-text-field>
-              <v-text-field v-model.number="editVehicles[i].skills[0]" :persistent-hint="true" :hint="'Skills of this Vehicle'"></v-text-field>
+              <v-select v-model="selectedSkills" :items="vehicleSkills" item-text="name" item-value="id" :persistent-hint="true" :hint="'Skills needed for this Job'" multiple>
+                <template v-slot:append-item>
+                  <v-divider class="mt-2"></v-divider>
+                  <v-btn @click="manageSkills">
+                    <v-icon :title="$t('optimization.manageSkills')" color="dark" :medium="$lowResolution">settings</v-icon>
+                    {{ 'manage Skills' }}
+                  </v-btn>
+                </template>
+              </v-select>
               <v-text-field v-model="editVehicles[i].time_window" :persistent-hint="true" :hint="'Working time window of this Vehicle (in seconds passed since 00:00 or timestamp'"></v-text-field>
             </div>
           </v-card-text>

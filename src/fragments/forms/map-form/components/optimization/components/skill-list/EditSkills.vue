@@ -7,7 +7,7 @@
           <v-btn class="edit-skills-btn" flat :style="{background: 'white'}" @click="saveSkills()" :title="$t('optimization.saveSkills')">
             <v-icon color="success">save</v-icon>
           </v-btn>
-          <v-btn class="edit-skills-btn" flat :style="{}" @click="addSkill(true)" :title="$t('optimization.addJob')">
+          <v-btn class="edit-skills-btn" flat :style="{}" @click="addSkill(true)" :title="$t('optimization.addSkill')">
             <v-icon color="info">add</v-icon>
           </v-btn>
         </h3>
@@ -30,7 +30,7 @@
                    @click="closeSkillsModal">{{$t('global.cancel')}}</v-btn>
           </v-flex>
           <v-flex text-xs-right xs12 sm3 md3 :class="{'ml-2': $vuetify.breakpoint.smAndDown}">
-            <v-btn :block="$lowResolution" color="info" :title="$t('optimization.addJob')" @click="addSkill(true)">
+            <v-btn :block="$lowResolution" color="info" :title="$t('optimization.addSkill')" @click="addSkill(true)">
               {{$t('optimization.addSkill')}}</v-btn>
           </v-flex>
           <v-flex text-xs-right xs12 sm3 md3 :class="{'ml-2': $vuetify.breakpoint.smAndDown}">

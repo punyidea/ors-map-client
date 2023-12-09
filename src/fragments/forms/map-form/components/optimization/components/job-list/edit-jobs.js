@@ -4,17 +4,17 @@ import PlaceInput from '@/fragments/forms/place-input/PlaceInput.vue'
 import EditSkills from '@/fragments/forms/map-form/components/optimization/components/skill-list/EditSkills.vue'
 import {EventBus} from '@/common/event-bus'
 import Job from '@/models/job'
+import Skill from '@/models/skill'
 
 export default {
   data: () => ({
     isJobsOpen: true,
     editId: 0,
     editJobs: [],
-    skills: [{
-      name: 'length > 1.5m',
-      id: 0
-    }
+    jobSkills: [
+      Skill.fromJSON('{"name":"length > 1.5m", "id":1}')
     ],
+    selectedSkills: [],
     showSkillManagement: false
   }),
   props: {
@@ -45,11 +45,13 @@ export default {
     }
   },
   created () {
+    this.loadSkills()
+
     for (const job of this.jobs) {
       this.editJobs.push(job.clone())
     }
-    const context = this
 
+    const context = this
     // edit Jobs box is open
     EventBus.$on('showJobsModal', (editId) => {
       context.isJobsOpen = true
@@ -111,9 +113,20 @@ export default {
       this.editJobs = this.jobs
     },
 
-    manageSkills() {
+    loadSkills() {
+      // this.jobSkills = this.$store.getters.appRouteData.skills
+      let storedSkills = localStorage.getItem('skills')
+      if (storedSkills) {
+        const skills = []
+        for (const skill of JSON.parse(storedSkills)) {
+          skills.push(Skill.fromJSON(skill))
+        }
+        this.jobSkills = skills
+      }
+    },
+    manageSkills(skillId) {
       this.showSkillManagement = true
-      EventBus.$emit('showSkillsModal')
+      EventBus.$emit('showSkillsModal', skillId)
     },
   }
 }
