@@ -11,7 +11,7 @@ export default {
   props: {
     skills: {
       Type: Array[Skill],
-      Required: true
+      Required: false
     },
   },
   components: {
@@ -46,6 +46,7 @@ export default {
 
     saveSkills () {
       this.$emit('skillsChanged', this.editSkills)
+      localStorage.setItem('skills', JSON.stringify(this.skillsJSON))
       this.closeSkillsModal()
     },
     addSkill () {

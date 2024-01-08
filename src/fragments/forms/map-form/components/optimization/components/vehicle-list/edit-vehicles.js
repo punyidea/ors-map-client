@@ -1,6 +1,7 @@
 import RouteImporter from '@/fragments/forms/route-importer/RouteImporter.vue'
 import MapFormBtn from '@/fragments/forms/map-form-btn/MapFormBtn.vue'
 import PlaceInput from '@/fragments/forms/place-input/PlaceInput.vue'
+import EditSkills from '@/fragments/forms/map-form/components/optimization/components/skill-list/EditSkills.vue'
 import {EventBus} from '@/common/event-bus'
 import Vehicle from '@/models/vehicle'
 import Skill from '@/models/skill'
@@ -10,15 +11,7 @@ export default {
     isVehiclesOpen: true,
     editId: 0,
     editVehicles: [],
-    vehicleSkills: [
-      {
-        name: 'length > 1.5m',
-        id: 1
-      },
-      {
-        name: 'example 2',
-        id: 2
-      }],
+    vehicleSkills: [],
     selectedSkills: [],
     showSkillManagement: false
   }),
@@ -26,6 +19,10 @@ export default {
     vehicles: {
       Type: Array[Vehicle],
       Required: true
+    },
+    skills: {
+      Type: Array[Skill],
+      Required: false
     },
     // Amount of place inputs
     disabledActions: {
@@ -37,6 +34,7 @@ export default {
     RouteImporter,
     MapFormBtn,
     PlaceInput,
+    EditSkills,
     EventBus
   },
   computed: {
@@ -49,10 +47,14 @@ export default {
     }
   },
   created () {
-    this.loadSkills()
+    // this.loadSkills()
 
     for (const v of this.vehicles) {
       this.editVehicles.push(v.clone())
+    }
+
+    for (const skill of this.skills) {
+      this.vehicleSkills.push(skill.clone())
     }
 
     const context = this
@@ -122,6 +124,13 @@ export default {
     manageSkills(skillId) {
       this.showSkillManagement = true
       EventBus.$emit('showSkillsModal', skillId)
+    },
+    skillsChanged(editedSkills) {
+      let newSkills = []
+      for (const skill of editedSkills) {
+        newSkills.push(skill.clone())
+      }
+      this.vehicleSkills = newSkills
     },
   }
 }

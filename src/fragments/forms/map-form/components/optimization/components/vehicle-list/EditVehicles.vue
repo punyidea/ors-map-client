@@ -55,6 +55,7 @@
         </v-layout>
       </box>
     </v-dialog>
+    <edit-skills v-if="showSkillManagement" :skills="skills" @skillsChanged="skillsChanged" @close="showSkillManagement=false"></edit-skills>
   </div>
 </template>
 

@@ -33,7 +33,7 @@
           <v-card-text>
             <div v-if="editId !== j.id">
               <div style="width: 100%; height: auto" v-for="(v, k) in j" :key="k">
-                <div v-if="['service', 'skill','amount'].includes(k)">
+                <div v-if="['service', 'skill', 'amount'].includes(k)">
                   <v-chip v-if="v && v.length">{{k}}: {{v}}</v-chip>
                 </div>
               </div>
@@ -70,7 +70,7 @@
         </v-layout>
       </box>
     </v-dialog>
-    <edit-skills v-if="showSkillManagement" :skills="skills" @close="showSkillManagement=false"></edit-skills>
+    <edit-skills v-if="showSkillManagement" :skills="skills" @skillsChanged="skillsChanged" @close="showSkillManagement=false"></edit-skills>
   </div>
 </template>
 

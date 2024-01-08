@@ -12,6 +12,7 @@ import constants from '@/resources/constants'
 import appConfig from '@/config/app-config'
 import Job from '@/models/job'
 import Vehicle from '@/models/vehicle'
+import Skill from '@/models/skill'
 
 // Local components
 import OptimizationDetails from './components/optimization-details/OptimizationDetails'
@@ -28,10 +29,12 @@ export default {
       Job.fromJSON('{"id":1,"service":300,"amount":[1],"location":[8.68525,49.420822]}')
     ],
     vehicles: [Vehicle.fromJSON('{"id":1,"profile":"driving-car","start":[ 8.675863, 49.418477 ],"end":[ 8.675863, 49.418477 ],"capacity":[4]}')],
+    skills: [Skill.fromJSON('{"name":"length > 1.5m", "id":1}')],
     roundTripActive: false,
     showManageJobsTooltip: true,
     showJobManagement: false,
-    showVehicleManagement: false
+    showVehicleManagement: false,
+    showSkillManagement: false
   }),
   components: {
     FieldsContainer,
@@ -299,12 +302,20 @@ export default {
         // TODO: load jobs
         let storedJobs = localStorage.getItem('jobs')
         let storedVehicles = localStorage.getItem('vehicles')
+        let storedSkills = localStorage.getItem('skills')
         if (storedVehicles) {
           const vehicles = []
           for (const v of JSON.parse(storedVehicles)) {
             vehicles.push(Vehicle.fromJSON(v))
           }
           this.vehicles = vehicles
+        }
+        if (storedSkills) {
+          const skills = []
+          for (const s of JSON.parse(storedSkills)) {
+            skills.push(Skill.fromJSON(s))
+          }
+          this.skills = skills
         }
         const jobs = []
         if (places.length > 0) {
@@ -339,10 +350,16 @@ export default {
         newVehicles.push(vehicle.clone())
       }
       this.vehicles = newVehicles
-      this.optimizeJobs()
     },
     vehicleColors(vehicleId) {
       return constants.vehicleColors[vehicleId]
-    }
+    },
+    skillsChanged(editedSkills) {
+      let newSkills = []
+      for (const skill of editedSkills) {
+        newSkills.push(skill.clone())
+      }
+      this.skills = newSkills
+    },
   }
 }

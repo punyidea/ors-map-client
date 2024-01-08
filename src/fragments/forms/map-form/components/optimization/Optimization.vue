@@ -49,8 +49,8 @@
         </form-actions>
       </v-layout>
     </v-form>
-    <edit-jobs v-if="showJobManagement" :jobs="jobs" @jobsChanged="jobsChanged" @close="showJobManagement=false"></edit-jobs>
-    <edit-vehicles v-if="showVehicleManagement" :vehicles="vehicles" @vehiclesChanged="vehiclesChanged" @close="showVehicleManagement=false"></edit-vehicles>
+    <edit-jobs v-if="showJobManagement" :jobs="jobs" :skills="skills" @jobsChanged="jobsChanged" @close="showJobManagement=false"></edit-jobs>
+    <edit-vehicles v-if="showVehicleManagement" :vehicles="vehicles" :skills="skills" @vehiclesChanged="vehiclesChanged" @close="showVehicleManagement=false"></edit-vehicles>
   </div>
 </template>
 

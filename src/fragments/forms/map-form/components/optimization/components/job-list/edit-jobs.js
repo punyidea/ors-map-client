@@ -11,9 +11,7 @@ export default {
     isJobsOpen: true,
     editId: 0,
     editJobs: [],
-    jobSkills: [
-      Skill.fromJSON('{"name":"length > 1.5m", "id":1}')
-    ],
+    jobSkills: [],
     selectedSkills: [],
     showSkillManagement: false
   }),
@@ -21,6 +19,10 @@ export default {
     jobs: {
       Type: Array[Job],
       Required: true
+    },
+    skills: {
+      Type: Array[Skill],
+      Required: false
     },
     // Amount of place inputs
     disabledActions: {
@@ -45,10 +47,14 @@ export default {
     }
   },
   created () {
-    this.loadSkills()
+    // this.loadSkills()
 
     for (const job of this.jobs) {
       this.editJobs.push(job.clone())
+    }
+
+    for (const skill of this.skills) {
+      this.jobSkills.push(skill.clone())
     }
 
     const context = this
@@ -127,6 +133,13 @@ export default {
     manageSkills(skillId) {
       this.showSkillManagement = true
       EventBus.$emit('showSkillsModal', skillId)
+    },
+    skillsChanged(editedSkills) {
+      let newSkills = []
+      for (const skill of editedSkills) {
+        newSkills.push(skill.clone())
+      }
+      this.jobSkills = newSkills
     },
   }
 }
