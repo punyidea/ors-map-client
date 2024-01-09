@@ -19,6 +19,7 @@ import OptimizationDetails from './components/optimization-details/OptimizationD
 import JobList from './components/job-list/JobList.vue'
 import EditJobs from './components/job-list/EditJobs.vue'
 import EditVehicles from './components/vehicle-list/EditVehicles.vue'
+import EditSkills from './components/skill-list/EditSkills.vue'
 
 export default {
   mixins: [MapFormMixin],
@@ -29,7 +30,7 @@ export default {
       Job.fromJSON('{"id":1,"service":300,"amount":[1],"location":[8.68525,49.420822]}')
     ],
     vehicles: [Vehicle.fromJSON('{"id":1,"profile":"driving-car","start":[ 8.675863, 49.418477 ],"end":[ 8.675863, 49.418477 ],"capacity":[4]}')],
-    skills: [Skill.fromJSON('{"name":"length > 1.5m", "id":1}')],
+    skills: [Skill.fromJSON('{"name":"length over 1.5m", "id":1}')],
     roundTripActive: false,
     showManageJobsTooltip: true,
     showJobManagement: false,
@@ -44,6 +45,7 @@ export default {
     JobList,
     EditJobs,
     EditVehicles,
+    EditSkills
   },
   computed: {
     jobsJSON () {
@@ -186,6 +188,11 @@ export default {
     manageVehicles(vehicleId) {
       this.showVehicleManagement = true
       EventBus.$emit('showVehiclesModal', vehicleId)
+    },
+
+    manageSkills(skillId) {
+      this.showSkillManagement = true
+      EventBus.$emit('showSkillsModal', skillId)
     },
     /**
      * After each change on the map search we redirect the user to the built target app route
