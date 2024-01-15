@@ -7,6 +7,7 @@ export default {
     couldNotResolveTheJobLocation: 'Could not resolve the job location',
     couldNotResolveTheVehicleLocation: 'Could not resolve the vehicle location',
     genericErrorMsg: 'It was not possible to optimize Jobs',
+    service: 'Service time',
     capacity: 'Capacity',
     skills: 'Skills',
     manageSkills: 'Manage Skills',
