@@ -11,7 +11,7 @@
             <v-icon color="info">add</v-icon>
           </v-btn>
         </h3>
-        <v-card @click="editId = i+1" elevation="3" style="margin: 5px;cursor: pointer" v-for="(skill, i) in skills" :key="i">
+        <v-card @click="editId = i+1" elevation="3" style="margin: 5px;cursor: pointer" v-for="(skill, i) in editSkills" :key="i">
           <v-card-title style="padding-bottom: 0;">
             <div><b>Skill: {{ skill.name }}</b></div>
             <v-btn v-if="editId === skill.id" class="edit-btn" flat small :style="{background: 'white'}" @click.stop="editId = 0" :title="$t('optimization.editSkill')">

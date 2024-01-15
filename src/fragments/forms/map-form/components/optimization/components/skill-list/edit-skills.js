@@ -51,7 +51,9 @@ export default {
     },
     addSkill () {
       // TODO
-      this.showError(this.$t('global.notImplemented'), {timeout: 3000})
+      const newSkill = new Skill('', this.editSkills.length + 1)
+      this.editSkills.push(newSkill)
+      // this.showError(this.$t('global.notImplemented'), {timeout: 3000})
     },
     removeSkill (id) {
       this.editSkills.splice(id-1,1)
