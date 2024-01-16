@@ -27,7 +27,7 @@ class Job extends Place {
   static fromJSON(jobJSONString) {
     let job = JSON.parse(jobJSONString)
     let skillObjects = []
-    if (job.skills.length) {
+    if (job.skills) {
       for (let id of job.skills) {
         skillObjects.push(Skill.getName(id))
       }

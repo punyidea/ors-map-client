@@ -14,18 +14,19 @@ class Skill {
     let skillObjects = []
     let skillIds = []
     for (const skill of JSON.parse(storedSkills)) {
-      const thisSkill = Skill.fromJSON(skill)
+      const thisSkill = skill
       skillObjects.push(thisSkill)
-      skillIds.push(thisSkill.id)
+      skillIds.push(thisSkill['id'])
     }
 
-    if (id in skillIds) {
+    if (skillIds.includes(id)) {
       return skillObjects[skillIds.indexOf(id)]
     } else {
       const newSkill = new Skill('Enter skill name', id)
       skillObjects.push(newSkill)
       const jsonSkills = []
       for (const skill of skillObjects) {
+        console.log(skill)
         jsonSkills.push(skill.toJSON())
       }
       localStorage.setItem('skills', jsonSkills)
