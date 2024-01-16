@@ -3,6 +3,7 @@ export default {
   optimization: {
     optimization: 'optimization',
     optimizationResultReady: 'Optimization result ready',
+    notPossible: 'Optimization was not possible',
     optimizeJobs: 'optimizeJobs',
     couldNotResolveTheJobLocation: 'Could not resolve the job location',
     couldNotResolveTheVehicleLocation: 'Could not resolve the vehicle location',

@@ -1,4 +1,5 @@
 import Place from '@/models/place'
+import Skill from '@/models/skill'
 
 class Job extends Place {
   constructor(lng = null, lat = null, placeName = '', options = {}) {
@@ -25,10 +26,16 @@ class Job extends Place {
    */
   static fromJSON(jobJSONString) {
     let job = JSON.parse(jobJSONString)
+    let skillObjects = []
+    if (job.skills.length) {
+      for (let id of job.skills) {
+        skillObjects.push(Skill.getName(id))
+      }
+    }
     return new Job(job.location[0], job.location[1], job.placeName, {
       id: job.id,
       service: job.service,
-      skills: job.skills,
+      skills: skillObjects,
       priority: job.priority,
       time_windows: job.time_windows,
       resolve: true

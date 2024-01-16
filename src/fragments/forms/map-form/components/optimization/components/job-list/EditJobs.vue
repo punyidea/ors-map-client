@@ -40,8 +40,8 @@
             </div>
             <div v-else>
               <v-text-field v-model="editJobs[i].location" :persistent-hint="true" :hint="'Location'"></v-text-field>
-              <v-text-field v-model.number="editJobs[i].service[0]" :persistent-hint="true" :hint="'Service time (in seconds)'"></v-text-field>
-              <v-select v-model="selectedSkills" :items="jobSkills" item-text="name" item-value="id" :persistent-hint="true" :hint="'Skills needed for this Job'" multiple>
+              <v-text-field v-model.number="editJobs[i].service" :persistent-hint="true" :hint="'Service time (in seconds)'"></v-text-field>
+              <v-select v-model="editJobs[i].skills" :items="jobSkills" :item-text="'name'" :item-value="'id'" :persistent-hint="true" :hint="'Skills needed for this Job'" multiple>
                 <template v-slot:append-item>
                   <v-divider class="mt-2"></v-divider>
                   <v-btn @click="manageSkills">

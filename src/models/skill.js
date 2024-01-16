@@ -9,6 +9,30 @@ class Skill {
     return new Skill(skill.name, skill.id)
   }
 
+  static getName(id) {
+    const storedSkills = localStorage.getItem('skills')
+    let skillObjects = []
+    let skillIds = []
+    for (const skill of JSON.parse(storedSkills)) {
+      const thisSkill = Skill.fromJSON(skill)
+      skillObjects.push(thisSkill)
+      skillIds.push(thisSkill.id)
+    }
+
+    if (id in skillIds) {
+      return skillObjects[skillIds.indexOf(id)]
+    } else {
+      const newSkill = new Skill('Enter skill name', id)
+      skillObjects.push(newSkill)
+      const jsonSkills = []
+      for (const skill of skillObjects) {
+        jsonSkills.push(skill.toJSON())
+      }
+      localStorage.setItem('skills', jsonSkills)
+      return newSkill
+    }
+  }
+
   clone() {
     return Skill.fromJSON(this.toJSON(true))
   }
