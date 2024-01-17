@@ -12,7 +12,6 @@ export default {
     editId: 0,
     editVehicles: [],
     vehicleSkills: [],
-    selectedSkills: [],
     showSkillManagement: false
   }),
   props: {

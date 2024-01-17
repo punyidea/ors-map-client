@@ -1,4 +1,5 @@
 import Place from '@/models/place'
+import Skill from '@/models/skill'
 
 class Vehicle extends Place {
   constructor(lng = null, lat = null, placeName = '', options = {}) {
@@ -26,6 +27,12 @@ class Vehicle extends Place {
    */
   static fromJSON(vehicleJSONString) {
     let vehicle = JSON.parse(vehicleJSONString)
+    let skillObjects = []
+    if (vehicle.skills) {
+      for (let id of vehicle.skills) {
+        skillObjects.push(Skill.getName(id))
+      }
+    }
     return new Vehicle(
       vehicle.start[0] || vehicle.end[0],
       vehicle.start[1] || vehicle.end[1],
@@ -37,7 +44,7 @@ class Vehicle extends Place {
         start: vehicle.start,
         end: vehicle.end,
         capacity: vehicle.capacity,
-        skills: vehicle.skills,
+        skills: skillObjects,
         time_window: vehicle.time_window,
         resolve: true,
       }
@@ -68,7 +75,7 @@ class Vehicle extends Place {
 
     if (this.skills.length) {
       let skillIds = []
-      for (const skill in this.skills) {
+      for (const skill of this.skills) {
         skillIds.push(skill.id)
       }
       out.skills = skillIds

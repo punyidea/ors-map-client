@@ -17,6 +17,7 @@ import Skill from '@/models/skill'
 // Local components
 import OptimizationDetails from './components/optimization-details/OptimizationDetails'
 import JobList from './components/job-list/JobList.vue'
+import VehicleList from './components/vehicle-list/VehicleList.vue'
 import EditJobs from './components/job-list/EditJobs.vue'
 import EditVehicles from './components/vehicle-list/EditVehicles.vue'
 import EditSkills from './components/skill-list/EditSkills.vue'
@@ -29,7 +30,7 @@ export default {
     jobs: [
       Job.fromJSON('{"id":1,"service":300,"skills":[1],"amount":[1],"location":[8.68525,49.420822]}')
     ],
-    vehicles: [Vehicle.fromJSON('{"id":1,"profile":"driving-car","start":[ 8.675863, 49.418477 ],"end":[ 8.675863, 49.418477 ],"capacity":[4]}')],
+    vehicles: [Vehicle.fromJSON('{"id":1,"profile":"driving-car","start":[ 8.675863, 49.418477 ],"end":[ 8.675863, 49.418477 ],"capacity":[4],"skills":[1]}')],
     skills: [Skill.fromJSON('{"name":"length over 1.5m", "id":1}')],
     roundTripActive: false,
     showManageJobsTooltip: true,
@@ -43,6 +44,7 @@ export default {
     PlaceInput,
     OptimizationDetails,
     JobList,
+    VehicleList,
     EditJobs,
     EditVehicles,
     EditSkills
@@ -320,7 +322,7 @@ export default {
         if (storedSkills) {
           const skills = []
           for (const s of JSON.parse(storedSkills)) {
-            skills.push(Skill.fromJSON(s))
+            skills.push(s)
           }
           this.skills = skills
         }
@@ -357,9 +359,6 @@ export default {
         newVehicles.push(vehicle.clone())
       }
       this.vehicles = newVehicles
-    },
-    vehicleColors(vehicleId) {
-      return constants.vehicleColors[vehicleId]
     },
     skillsChanged(editedSkills) {
       let newSkills = []

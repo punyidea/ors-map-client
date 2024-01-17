@@ -29,7 +29,7 @@
             <div v-else>
               <v-text-field v-model="editVehicles[i].start" :persistent-hint="true" :hint="'Start & End'"></v-text-field>
               <v-text-field v-model.number="editVehicles[i].capacity[0]" :persistent-hint="true" :hint="'Capacity'"></v-text-field>
-              <v-select v-model="selectedSkills" :items="vehicleSkills" item-text="name" item-value="id" :persistent-hint="true" :hint="'Skills needed for this Job'" multiple>
+              <v-select v-model="editVehicles[i].skills" :items="vehicleSkills" :item-text="'name'" :item-value="'id'" return-object :persistent-hint="true" :hint="'Skills needed for this Job'" multiple>
                 <template v-slot:append-item>
                   <v-divider class="mt-2"></v-divider>
                   <v-btn @click="manageSkills">
