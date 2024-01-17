@@ -64,7 +64,7 @@ class Job extends Place {
 
     if (this.skills.length) {
       let skillIds = []
-      for (const skill in this.skills) {
+      for (const skill of this.skills) {
         skillIds.push(skill.id)
       }
       out['skills'] = skillIds

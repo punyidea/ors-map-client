@@ -12,7 +12,6 @@ export default {
     editId: 0,
     editJobs: [],
     jobSkills: [],
-    selectedSkills: [],
     showSkillManagement: false
   }),
   props: {

@@ -18,9 +18,9 @@ export default {
     EventBus
   },
   computed: {
-    skillsJSON () {
+    editSkillsJSON () {
       const jsonSkills = []
-      for (const skill of this.skills) {
+      for (const skill of this.editSkills) {
         jsonSkills.push(skill.toJSON())
       }
       return jsonSkills
@@ -46,7 +46,7 @@ export default {
 
     saveSkills () {
       this.$emit('skillsChanged', this.editSkills)
-      localStorage.setItem('skills', JSON.stringify(this.skillsJSON))
+      localStorage.setItem('skills', JSON.stringify(this.editSkillsJSON))
       this.closeSkillsModal()
     },
     addSkill () {

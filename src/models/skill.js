@@ -26,7 +26,6 @@ class Skill {
       skillObjects.push(newSkill)
       const jsonSkills = []
       for (const skill of skillObjects) {
-        console.log(skill)
         jsonSkills.push(skill.toJSON())
       }
       localStorage.setItem('skills', jsonSkills)

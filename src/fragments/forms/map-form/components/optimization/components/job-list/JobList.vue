@@ -5,8 +5,10 @@
           <div slot="header" style="padding-bottom: 0;"><v-icon style="padding: 0 5px 0 0">local_shipping</v-icon><b>Job {{j.id}} - {{ j.location[0].toPrecision(8) }}, {{ j.location[1].toPrecision(8)}}</b></div>
           <v-card-text>
             <template v-for="prop in ['amount','service','skills','time_window']">
-              <v-chip v-if="j[prop] && prop === 'skills'" style="flex: auto">{{ $t(`optimization.${prop}`) }}: {{ j[prop]['id'] }}></v-chip>
-              <v-chip v-else-if="j[prop] && prop !== 'skills'" style="flex: auto">{{ $t(`optimization.${prop}`) }}: {{ j[prop] }}</v-chip>
+              <v-chip v-if="j[prop] && prop !== 'skills'" style="flex: auto">{{ $t(`optimization.${prop}`) }}: {{ j[prop] }}</v-chip>
+              <v-chip v-else-if="j[prop] && prop === 'skills'" style="flex: auto">
+                {{ $t(`optimization.${prop}`) }}: {{ skillIds(j) }}
+              </v-chip>
             </template>
           </v-card-text>
         </v-expansion-panel-content>
