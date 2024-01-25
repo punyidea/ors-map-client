@@ -67,6 +67,7 @@ class Job extends Place {
       for (const skill of this.skills) {
         skillIds.push(skill.id)
       }
+      skillIds.sort()
       out['skills'] = skillIds
     }
     if (this.time_windows.length) {
