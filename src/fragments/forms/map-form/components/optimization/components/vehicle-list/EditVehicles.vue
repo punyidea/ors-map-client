@@ -30,7 +30,7 @@
               <v-text-field v-model="editVehicles[i].start" :persistent-hint="true" :hint="'Start & End'"></v-text-field>
               <v-text-field v-model.number="editVehicles[i].capacity[0]" :persistent-hint="true" :hint="'Capacity'"></v-text-field>
               <v-select v-model="editVehicles[i].skills" :items="vehicleSkills" :item-text="'name'" :item-value="'id'" return-object chips deletable-chips
-                        :persistent-hint="true" :hint="'Skills needed for this Job'" multiple :menu-props="{'closeOnContentClick':true}">
+                        :persistent-hint="true" :hint="'Skills this Vehicle has'" multiple :menu-props="{'closeOnContentClick':true}">
                 <template v-slot:append-item>
                   <v-divider class="mt-2"></v-divider>
                   <v-btn @click="manageSkills">

@@ -27,7 +27,7 @@ export default {
   data: () => ({
     mode: constants.modes.optimization,
     mapViewData: new MapViewData(),
-    skills: [Skill.fromJSON('{"name":"length over 1.5m", "id":1}')],
+    skills: [],
     jobs: [],
     vehicles: [],
     roundTripActive: false,
@@ -74,7 +74,17 @@ export default {
     }
   },
   created () {
-    localStorage.setItem('skills', JSON.stringify(this.skillsJSON))
+    let storedSkills = localStorage.getItem('skills')
+    if (storedSkills) {
+      const skills = []
+      for (const s of JSON.parse(storedSkills)) {
+        skills.push(new Skill(s.name, s.id))
+      }
+      this.skills = skills
+    } else {
+      this.skills = [Skill.fromJSON('{"name":"length over 1.5m", "id":1}')]
+      localStorage.setItem('skills', JSON.stringify(this.skillsJSON))
+    }
     this.jobs = [Job.fromJSON('{"id":1,"service":300,"skills":[1],"amount":[1],"location":[8.68525,49.420822]}')]
     this. vehicles = [Vehicle.fromJSON('{"id":1,"profile":"driving-car","start":[ 8.675863, 49.418477 ],"end":[ 8.675863, 49.418477 ],"capacity":[4],"skills":[1]}')]
 
@@ -157,6 +167,7 @@ export default {
       if (this.$store.getters.mode === constants.modes.optimization) {
         this.loadData()
       } else {
+        this.skills = []
         this.jobs = []
         this.vehicles = []
       }
@@ -320,20 +331,12 @@ export default {
         // TODO: load jobs
         let storedJobs = localStorage.getItem('jobs')
         let storedVehicles = localStorage.getItem('vehicles')
-        let storedSkills = localStorage.getItem('skills')
         if (storedVehicles) {
           const vehicles = []
           for (const v of JSON.parse(storedVehicles)) {
             vehicles.push(Vehicle.fromJSON(v))
           }
           this.vehicles = vehicles
-        }
-        if (storedSkills) {
-          const skills = []
-          for (const s of JSON.parse(storedSkills)) {
-            skills.push(s)
-          }
-          this.skills = skills
         }
         const jobs = []
         if (places.length > 0) {
